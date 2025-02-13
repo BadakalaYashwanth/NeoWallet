@@ -5,6 +5,8 @@ NeoWallet is a modern digital wallet application designed for seamless money tra
 
 Checkout the deployed site: [NeoWallet](https://p-928053.lovable.app/)
 
+**![Image](https://github.com/user-attachments/assets/42585c9d-66e5-4e66-9fe8-ac665f365501)**
+
 ## Features
 - **Smart Transaction Insights & Analytics** 📊
   - Automatic spending categorization (Groceries, Bills, Subscriptions, etc.).
@@ -16,15 +18,19 @@ Checkout the deployed site: [NeoWallet](https://p-928053.lovable.app/)
   - View a complete transaction history with filters by date and amount.
   - Third-party payment integration for merchant transactions.
 
+**![Image](https://github.com/user-attachments/assets/1f1da0bf-0eea-4f8c-b0c3-927978cce48c)**
+
 - **Advanced UI Enhancements**
   - Improved UI visibility with optimized color contrast.
   - Instagram-inspired theme for an engaging experience.
   - Enhanced accessibility and readability.
-
+    
+**![Image](https://github.com/user-attachments/assets/aac58351-b4bb-4a8d-bd41-766925da58a6)**
 - **Spending Analysis**
   - Overview of sending, receiving, and available balance.
   - Pie charts and graphical representations of transaction history.
   - Monthly spending trends and AI-driven budget insights.
+ **![Image](https://github.com/user-attachments/assets/113f52d8-f0df-4901-a564-30fbcbf1be29)**
 
 ## Deployed Application
 Experience NeoWallet live: [NeoWallet Deployment](https://p-928053.lovable.app/)
