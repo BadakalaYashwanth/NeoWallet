@@ -1,70 +1,65 @@
 # NeoWallet
 
-## 🚀 Overview
-NeoWallet is an advanced digital wallet application designed to provide seamless financial management. It enables users to send, receive, and schedule payments effortlessly while offering AI-powered insights and analytics to track spending habits.
+## Overview
+NeoWallet is a modern digital wallet application designed for seamless money transactions, expense tracking, and AI-driven budgeting insights. Its user-friendly interface, inspired by Instagram’s UI/UX, offers a unique and intuitive financial management experience.
 
-## 🔑 Key Features
+Checkout the deployed site: [NeoWallet](https://p-928053.lovable.app/)
 
-### 💰 Transaction Management
-- Send, receive, and schedule payments securely.
-- View complete transaction history with detailed insights.
-- AI-powered categorization of transactions (Groceries, Bills, Subscriptions, etc.).
+## Features
+- **Smart Transaction Insights & Analytics** 📊
+  - Automatic spending categorization (Groceries, Bills, Subscriptions, etc.).
+  - AI-powered budgeting suggestions based on transaction history.
+  - Graphical analysis with charts and graphs for spending trends.
 
-### 📊 Spending Insights & Analytics
-- **Spending by Category:** Automatically categorize transactions and visualize spending patterns.
-- **Monthly Spending Trends:** Graphical representation of spending behavior over time.
-- **AI Budget Insight:** Smart budgeting suggestions based on user spending history.
+- **Transaction Management**
+  - Send, receive, and schedule payments easily.
+  - View a complete transaction history with filters by date and amount.
+  - Third-party payment integration for merchant transactions.
 
-### 🏦 Merchant Payments
-- Support for third-party integrations to facilitate seamless merchant transactions.
-- Secure payment processing with multiple payment methods (Bank Transfers, Cards, UPI, Wallets).
+- **Advanced UI Enhancements**
+  - Improved UI visibility with optimized color contrast.
+  - Instagram-inspired theme for an engaging experience.
+  - Enhanced accessibility and readability.
 
-### 🎨 Modern UI/UX Design
-- Inspired by Instagram's UI/UX for an intuitive and visually appealing experience.
-- Light & dark mode support for better accessibility.
+- **Spending Analysis**
+  - Overview of sending, receiving, and available balance.
+  - Pie charts and graphical representations of transaction history.
+  - Monthly spending trends and AI-driven budget insights.
 
-### 🔒 Security & Accessibility
-- Secure transactions with encrypted payment processing.
-- User authentication for enhanced protection.
+## Deployed Application
+Experience NeoWallet live: [NeoWallet Deployment](https://p-928053.lovable.app/)
 
-## 📌 Installation & Setup
-
+## Installation
 1. Clone the repository:
-   ```sh
+   ```bash
    git clone https://github.com/BadakalaYashwanth/NeoWallet.git
    ```
 2. Navigate to the project directory:
-   ```sh
+   ```bash
    cd NeoWallet
    ```
 3. Install dependencies:
-   ```sh
+   ```bash
    npm install
    ```
-4. Start the application:
-   ```sh
+4. Run the application:
+   ```bash
    npm start
    ```
 
-## 🛠️ Tech Stack
-- **Frontend:** React, TailwindCSS
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB
-- **Payment Integration:** Secure API-based transactions
-- **Charts & Analytics:** Chart.js, D3.js
+## Technologies Used
+- React.js
+- Node.js
+- Express.js
+- MongoDB
+- Chart.js for data visualization
+- AI/ML integration for smart budgeting
 
-## 📖 Future Enhancements
-- **Multi-Currency Support** for global transactions.
-- **Automated Expense Reports** sent via email.
-- **Investment Insights & Savings Recommendations.**
+## Contributions
+Feel free to fork this repository and submit pull requests to improve NeoWallet.
 
-## 🏆 Contributing
-We welcome contributions! Feel free to open issues and submit pull requests.
+## License
+This project is licensed under the MIT License.
 
-## 📬 Contact
-For any queries or collaboration opportunities, connect with me:
-- LinkedIn: [Badakala Yaswanth](https://www.linkedin.com/in/badakala-yaswanth-aa2853238/)
-- GitHub: [BadakalaYashwanth](https://github.com/BadakalaYashwanth)
-
-## ⭐ Show Your Support
-If you find this project useful, give it a ⭐ on [GitHub](https://github.com/BadakalaYashwanth/NeoWallet)! 🎉
+## Contact
+For any queries or suggestions, reach out via GitHub issues.
