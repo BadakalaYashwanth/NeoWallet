@@ -2,8 +2,23 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { PlusCircle, Wallet, ShoppingBag, Coffee, Home, Car, Plane, Phone, Utensils } from "lucide-react";
+import { 
+  PlusCircle, 
+  Wallet, 
+  ShoppingBag, 
+  Coffee, 
+  Home, 
+  Car, 
+  Plane, 
+  Phone, 
+  Utensils,
+  Sparkles,
+  TrendingDown,
+  AlertCircle,
+  ArrowUpRight
+} from "lucide-react";
 import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface Budget {
   id: string;
@@ -12,6 +27,15 @@ interface Budget {
   limit: number;
   spent: number;
   color: string;
+}
+
+interface SavingSuggestion {
+  id: string;
+  title: string;
+  description: string;
+  potentialSaving: number;
+  icon: JSX.Element;
+  type: 'optimization' | 'alert' | 'opportunity';
 }
 
 const initialBudgets: Budget[] = [
@@ -57,10 +81,45 @@ const initialBudgets: Budget[] = [
   }
 ];
 
+const savingSuggestions: SavingSuggestion[] = [
+  {
+    id: "1",
+    title: "Reduce Food Delivery Spending",
+    description: "You've spent 40% more on food delivery this month compared to your average. Consider cooking at home more often.",
+    potentialSaving: 2500,
+    icon: <Utensils className="h-5 w-5 text-yellow-400" />,
+    type: 'optimization'
+  },
+  {
+    id: "2",
+    title: "Unused Subscription Found",
+    description: "We noticed you haven't used your music streaming service in 2 months.",
+    potentialSaving: 199,
+    icon: <AlertCircle className="h-5 w-5 text-red-400" />,
+    type: 'alert'
+  },
+  {
+    id: "3",
+    title: "Smart Saving Opportunity",
+    description: "Based on your cash flow, you can save ₹5,000 more this month without affecting your lifestyle.",
+    potentialSaving: 5000,
+    icon: <Sparkles className="h-5 w-5 text-purple-400" />,
+    type: 'opportunity'
+  }
+];
+
 const Budget = () => {
+  const { toast } = useToast();
   const [budgets, setBudgets] = useState<Budget[]>(initialBudgets);
   const totalSpent = budgets.reduce((acc, budget) => acc + budget.spent, 0);
   const totalBudget = budgets.reduce((acc, budget) => acc + budget.limit, 0);
+
+  const handleOptimize = (suggestion: SavingSuggestion) => {
+    toast({
+      title: "Optimization Applied",
+      description: `We'll help you track ${suggestion.title.toLowerCase()} to save ₹${suggestion.potentialSaving.toLocaleString()}`
+    });
+  };
 
   return (
     <div className="space-y-8">
@@ -116,6 +175,42 @@ const Budget = () => {
           </div>
         </Card>
       </div>
+
+      {/* New AI Insights Section */}
+      <Card className="glass-card p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-purple-400" />
+            <h3 className="text-lg font-semibold text-white">AI Savings Insights</h3>
+          </div>
+          <span className="text-sm text-gray-400">Updated just now</span>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {savingSuggestions.map((suggestion) => (
+            <Card 
+              key={suggestion.id} 
+              className="glass-card p-4 hover:bg-white/5 transition-all cursor-pointer"
+              onClick={() => handleOptimize(suggestion)}
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div className="p-2 rounded-lg bg-white/5">
+                  {suggestion.icon}
+                </div>
+                <ArrowUpRight className="h-4 w-4 text-gray-400" />
+              </div>
+              <h4 className="font-medium text-white mb-2">{suggestion.title}</h4>
+              <p className="text-sm text-gray-400 mb-3">{suggestion.description}</p>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-400">Potential Saving</span>
+                <span className="text-green-400 font-medium">
+                  ₹{suggestion.potentialSaving.toLocaleString()}
+                </span>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </Card>
 
       <Card className="glass-card p-6">
         <h3 className="text-lg font-semibold mb-6 text-white">Category Budgets</h3>
