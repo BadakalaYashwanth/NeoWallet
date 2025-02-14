@@ -1,4 +1,3 @@
-
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -15,7 +14,9 @@ import {
   Sparkles,
   TrendingDown,
   AlertCircle,
-  ArrowUpRight
+  ArrowUpRight,
+  Repeat,
+  PiggyBank
 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
@@ -36,6 +37,13 @@ interface SavingSuggestion {
   potentialSaving: number;
   icon: JSX.Element;
   type: 'optimization' | 'alert' | 'opportunity';
+}
+
+interface AutoSweep {
+  enabled: boolean;
+  threshold: number;
+  targetAmount: number;
+  frequency: 'daily' | 'weekly' | 'monthly';
 }
 
 const initialBudgets: Budget[] = [
@@ -111,6 +119,13 @@ const savingSuggestions: SavingSuggestion[] = [
 const Budget = () => {
   const { toast } = useToast();
   const [budgets, setBudgets] = useState<Budget[]>(initialBudgets);
+  const [autoSweep, setAutoSweep] = useState<AutoSweep>({
+    enabled: false,
+    threshold: 10000,
+    targetAmount: 50000,
+    frequency: 'monthly'
+  });
+  
   const totalSpent = budgets.reduce((acc, budget) => acc + budget.spent, 0);
   const totalBudget = budgets.reduce((acc, budget) => acc + budget.limit, 0);
 
@@ -118,6 +133,20 @@ const Budget = () => {
     toast({
       title: "Optimization Applied",
       description: `We'll help you track ${suggestion.title.toLowerCase()} to save ₹${suggestion.potentialSaving.toLocaleString()}`
+    });
+  };
+
+  const toggleAutoSweep = () => {
+    setAutoSweep(prev => ({
+      ...prev,
+      enabled: !prev.enabled
+    }));
+    
+    toast({
+      title: autoSweep.enabled ? "Auto-Sweep Disabled" : "Auto-Sweep Enabled",
+      description: autoSweep.enabled 
+        ? "Auto-sweep to fixed deposit has been disabled"
+        : `Will automatically sweep excess funds above ₹${autoSweep.threshold.toLocaleString()} to fixed deposit`,
     });
   };
 
@@ -134,7 +163,7 @@ const Budget = () => {
         </Button>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="glass-card p-6">
           <div className="space-y-4">
             <div className="flex justify-between items-center">
@@ -174,9 +203,52 @@ const Budget = () => {
             <p className="text-sm text-gray-400">of your budget remaining</p>
           </div>
         </Card>
+
+        <Card className="glass-card p-6">
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-blue-500/20">
+                <PiggyBank className="h-5 w-5 text-blue-500" />
+              </div>
+              <h3 className="text-lg font-semibold text-white">Auto-Sweep</h3>
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={toggleAutoSweep}
+              className={`${autoSweep.enabled ? 'bg-green-500/20 text-green-500' : 'bg-gray-500/20 text-gray-400'}`}
+            >
+              {autoSweep.enabled ? 'Enabled' : 'Disabled'}
+            </Button>
+          </div>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-400">Threshold</span>
+              <span className="text-white">₹{autoSweep.threshold.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-400">Target Amount</span>
+              <span className="text-white">₹{autoSweep.targetAmount.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-400">Frequency</span>
+              <span className="text-white capitalize">{autoSweep.frequency}</span>
+            </div>
+            <div className="pt-2">
+              <Button variant="outline" className="w-full" onClick={() => {
+                toast({
+                  title: "Auto-Sweep Settings",
+                  description: "Settings panel will be implemented in the next update"
+                });
+              }}>
+                <Repeat className="h-4 w-4 mr-2" />
+                Configure Auto-Sweep
+              </Button>
+            </div>
+          </div>
+        </Card>
       </div>
 
-      {/* New AI Insights Section */}
       <Card className="glass-card p-6">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
