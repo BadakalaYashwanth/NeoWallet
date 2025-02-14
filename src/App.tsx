@@ -15,6 +15,7 @@ import SendMoney from "./pages/Send";
 import ReceiveMoney from "./pages/Receive";
 import SplitBills from "./pages/Split";
 import Banking from "./pages/Banking";
+import Budget from "./pages/Budget";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/analytics" element={<Analytics />} />
+                <Route path="/budget" element={<Budget />} />
                 <Route path="/transactions" element={<Transactions />} />
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/profile" element={<Profile />} />
