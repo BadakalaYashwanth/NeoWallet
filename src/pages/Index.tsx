@@ -3,7 +3,7 @@ import { DollarSign, PieChart, ArrowUpRight, ArrowDownRight, Send, Download, Use
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 import { useState, useEffect } from "react";
 import QRScanner from "@/components/QRScanner";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import ThemeToggle from "@/components/ThemeToggle";
 import { supabase } from "@/lib/supabaseClient";
@@ -28,16 +28,39 @@ const Index = () => {
   const [balance, setBalance] = useState(0);
   const [income, setIncome] = useState(0);
   const [expenses, setExpenses] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchUserData();
+
+    // Subscribe to realtime changes
+    const channel = supabase
+      .channel('schema-db-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'transactions'
+        },
+        () => {
+          fetchUserData();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const fetchUserData = async () => {
     try {
+      setIsLoading(true);
       const { data: { user } } = await supabase.auth.getUser();
+      
       if (!user) {
         toast({
           title: "Authentication required",
@@ -47,34 +70,48 @@ const Index = () => {
         return;
       }
 
-      const { data: balanceData } = await supabase
+      // Get current balance
+      const { data: balanceData, error: balanceError } = await supabase
         .from('users_balances')
         .select('balance')
         .eq('id', user.id)
         .single();
 
-      if (balanceData) {
-        setBalance(balanceData.balance);
+      if (balanceError) {
+        console.error('Error fetching balance:', balanceError);
+        throw balanceError;
       }
 
-      const { data: transactions } = await supabase
+      // Get all transactions for the current month
+      const startOfMonth = new Date();
+      startOfMonth.setDate(1);
+      startOfMonth.setHours(0, 0, 0, 0);
+
+      const { data: transactions, error: transactionsError } = await supabase
         .from('transactions')
         .select('*')
         .or(`user_id.eq.${user.id},recipient_id.eq.${user.id}`)
+        .gte('created_at', startOfMonth.toISOString())
         .order('created_at', { ascending: false });
 
-      if (transactions) {
-        const monthIncome = transactions
-          .filter(t => t.type === 'receive' && t.status === 'completed')
-          .reduce((sum, t) => sum + Number(t.amount), 0);
-        
-        const monthExpenses = transactions
-          .filter(t => (t.type === 'send' || t.type === 'split') && t.status === 'completed')
-          .reduce((sum, t) => sum + Number(t.amount), 0);
-
-        setIncome(monthIncome);
-        setExpenses(monthExpenses);
+      if (transactionsError) {
+        console.error('Error fetching transactions:', transactionsError);
+        throw transactionsError;
       }
+
+      // Calculate monthly income (received money)
+      const monthlyIncome = transactions
+        .filter(t => t.recipient_id === user.id && t.status === 'completed')
+        .reduce((sum, t) => sum + Number(t.amount), 0);
+
+      // Calculate monthly expenses (sent money)
+      const monthlyExpenses = transactions
+        .filter(t => t.user_id === user.id && t.status === 'completed')
+        .reduce((sum, t) => sum + Number(t.amount), 0);
+
+      setBalance(balanceData?.balance || 0);
+      setIncome(monthlyIncome);
+      setExpenses(monthlyExpenses);
     } catch (error) {
       console.error('Error fetching user data:', error);
       toast({
@@ -82,6 +119,8 @@ const Index = () => {
         description: "Failed to load your financial data",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -147,7 +186,9 @@ const Index = () => {
             <ArrowUpRight className="h-4 w-4 text-green-500" />
           </div>
           <p className="text-sm text-muted-foreground">Total Balance</p>
-          <h2 className="text-2xl font-bold text-white">₹{balance.toLocaleString()}</h2>
+          <h2 className="text-2xl font-bold text-white">
+            {isLoading ? "Loading..." : `₹${balance.toLocaleString()}`}
+          </h2>
           <p className="text-sm text-green-500">Updated just now</p>
         </Card>
 
@@ -159,7 +200,9 @@ const Index = () => {
             <PieChart className="h-4 w-4 text-green-500" />
           </div>
           <p className="text-sm text-muted-foreground">Income</p>
-          <h2 className="text-2xl font-bold text-white">₹{income.toLocaleString()}</h2>
+          <h2 className="text-2xl font-bold text-white">
+            {isLoading ? "Loading..." : `₹${income.toLocaleString()}`}
+          </h2>
           <p className="text-sm text-green-500">This month</p>
         </Card>
 
@@ -171,7 +214,9 @@ const Index = () => {
             <DollarSign className="h-4 w-4 text-red-500" />
           </div>
           <p className="text-sm text-muted-foreground">Expenses</p>
-          <h2 className="text-2xl font-bold text-white">₹{expenses.toLocaleString()}</h2>
+          <h2 className="text-2xl font-bold text-white">
+            {isLoading ? "Loading..." : `₹${expenses.toLocaleString()}`}
+          </h2>
           <p className="text-sm text-red-500">This month</p>
         </Card>
       </div>
