@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import ThemeToggle from "@/components/ThemeToggle";
 import { supabase } from "@/lib/supabaseClient";
 import { format } from "date-fns";
+import { User } from '@supabase/supabase-js';
 
 const quickActions = [
   { icon: Send, label: "Send", action: "send", color: "text-purple-500" },
@@ -23,13 +24,22 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [chartData, setChartData] = useState([]);
   const [recentTransactions, setRecentTransactions] = useState([]);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchUserData();
-    fetchChartData();
-    fetchRecentTransactions();
+    const initializeUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setCurrentUser(user);
+      if (user) {
+        fetchUserData();
+        fetchChartData();
+        fetchRecentTransactions();
+      }
+    };
+
+    initializeUser();
 
     // Subscribe to realtime changes
     const channel = supabase
@@ -42,9 +52,11 @@ const Index = () => {
           table: 'transactions'
         },
         () => {
-          fetchUserData();
-          fetchChartData();
-          fetchRecentTransactions();
+          if (currentUser) {
+            fetchUserData();
+            fetchChartData();
+            fetchRecentTransactions();
+          }
         }
       )
       .subscribe();
@@ -53,73 +65,6 @@ const Index = () => {
       supabase.removeChannel(channel);
     };
   }, []);
-
-  const fetchChartData = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      const last6Months = Array.from({ length: 6 }, (_, i) => {
-        const date = new Date();
-        date.setMonth(date.getMonth() - i);
-        return date;
-      }).reverse();
-
-      const monthlyData = await Promise.all(
-        last6Months.map(async (date) => {
-          const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-          const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-
-          const { data: transactions } = await supabase
-            .from('transactions')
-            .select('*')
-            .or(`user_id.eq.${user.id},recipient_id.eq.${user.id}`)
-            .gte('created_at', startOfMonth.toISOString())
-            .lte('created_at', endOfMonth.toISOString());
-
-          const income = transactions
-            ?.filter(t => t.recipient_id === user.id && t.status === 'completed')
-            .reduce((sum, t) => sum + Number(t.amount), 0) || 0;
-
-          const expenses = transactions
-            ?.filter(t => t.user_id === user.id && t.status === 'completed')
-            .reduce((sum, t) => sum + Number(t.amount), 0) || 0;
-
-          return {
-            name: format(date, 'MMM'),
-            income,
-            expenses
-          };
-        })
-      );
-
-      setChartData(monthlyData);
-    } catch (error) {
-      console.error('Error fetching chart data:', error);
-    }
-  };
-
-  const fetchRecentTransactions = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      const { data: transactions } = await supabase
-        .from('transactions')
-        .select(`
-          *,
-          sender:user_id(email),
-          recipient:recipient_id(email)
-        `)
-        .or(`user_id.eq.${user.id},recipient_id.eq.${user.id}`)
-        .order('created_at', { ascending: false })
-        .limit(5);
-
-      setRecentTransactions(transactions || []);
-    } catch (error) {
-      console.error('Error fetching recent transactions:', error);
-    }
-  };
 
   const fetchUserData = async () => {
     try {
@@ -186,6 +131,71 @@ const Index = () => {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchChartData = async () => {
+    try {
+      if (!currentUser) return;
+
+      const last6Months = Array.from({ length: 6 }, (_, i) => {
+        const date = new Date();
+        date.setMonth(date.getMonth() - i);
+        return date;
+      }).reverse();
+
+      const monthlyData = await Promise.all(
+        last6Months.map(async (date) => {
+          const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+          const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+          const { data: transactions } = await supabase
+            .from('transactions')
+            .select('*')
+            .or(`user_id.eq.${currentUser.id},recipient_id.eq.${currentUser.id}`)
+            .gte('created_at', startOfMonth.toISOString())
+            .lte('created_at', endOfMonth.toISOString());
+
+          const income = transactions
+            ?.filter(t => t.recipient_id === currentUser.id && t.status === 'completed')
+            .reduce((sum, t) => sum + Number(t.amount), 0) || 0;
+
+          const expenses = transactions
+            ?.filter(t => t.user_id === currentUser.id && t.status === 'completed')
+            .reduce((sum, t) => sum + Number(t.amount), 0) || 0;
+
+          return {
+            name: format(date, 'MMM'),
+            income,
+            expenses
+          };
+        })
+      );
+
+      setChartData(monthlyData);
+    } catch (error) {
+      console.error('Error fetching chart data:', error);
+    }
+  };
+
+  const fetchRecentTransactions = async () => {
+    try {
+      if (!currentUser) return;
+
+      const { data: transactions } = await supabase
+        .from('transactions')
+        .select(`
+          *,
+          sender:user_id(email),
+          recipient:recipient_id(email)
+        `)
+        .or(`user_id.eq.${currentUser.id},recipient_id.eq.${currentUser.id}`)
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      setRecentTransactions(transactions || []);
+    } catch (error) {
+      console.error('Error fetching recent transactions:', error);
     }
   };
 
@@ -342,11 +352,11 @@ const Index = () => {
                   <div className="flex items-center space-x-3">
                     <div className={`p-2 rounded-full ${
                       transaction.user_id === transaction.recipient_id ? 'bg-blue-500/20' :
-                      transaction.recipient_id === user?.id ? 'bg-green-500/20' : 'bg-red-500/20'
+                      transaction.recipient_id === currentUser?.id ? 'bg-green-500/20' : 'bg-red-500/20'
                     }`}>
                       {transaction.user_id === transaction.recipient_id ? (
                         <Users className="h-4 w-4 text-blue-500" />
-                      ) : transaction.recipient_id === user?.id ? (
+                      ) : transaction.recipient_id === currentUser?.id ? (
                         <ArrowDownRight className="h-4 w-4 text-green-500" />
                       ) : (
                         <ArrowUpRight className="h-4 w-4 text-red-500" />
@@ -354,7 +364,7 @@ const Index = () => {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-white">
-                        {transaction.user_id === user?.id ? 
+                        {transaction.user_id === currentUser?.id ? 
                           `Sent to ${transaction.recipient?.email}` :
                           `Received from ${transaction.sender?.email}`}
                       </p>
@@ -364,9 +374,9 @@ const Index = () => {
                     </div>
                   </div>
                   <p className={`text-sm font-medium ${
-                    transaction.recipient_id === user?.id ? 'text-green-500' : 'text-red-500'
+                    transaction.recipient_id === currentUser?.id ? 'text-green-500' : 'text-red-500'
                   }`}>
-                    {transaction.recipient_id === user?.id ? '+' : '-'}₹{Number(transaction.amount).toLocaleString()}
+                    {transaction.recipient_id === currentUser?.id ? '+' : '-'}₹{Number(transaction.amount).toLocaleString()}
                   </p>
                 </div>
               ))}
