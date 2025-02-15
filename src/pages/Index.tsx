@@ -111,15 +111,16 @@ const Index = () => {
 
       // Calculate monthly income (received money)
       const monthlyIncome = transactions
-        .filter(t => t.recipient_id === user.id && t.status === 'completed')
-        .reduce((sum, t) => sum + Number(t.amount), 0);
+        ?.filter(t => t.recipient_id === user.id && t.status === 'completed')
+        .reduce((sum, t) => sum + (Number(t.amount) || 0), 0) || 0;
 
       // Calculate monthly expenses (sent money)
       const monthlyExpenses = transactions
-        .filter(t => t.user_id === user.id && t.status === 'completed')
-        .reduce((sum, t) => sum + Number(t.amount), 0);
+        ?.filter(t => t.user_id === user.id && t.status === 'completed')
+        .reduce((sum, t) => sum + (Number(t.amount) || 0), 0) || 0;
 
-      setBalance(balanceData?.balance || 0);
+      // Ensure we have valid numbers before setting state
+      setBalance(Number(balanceData?.balance) || 0);
       setIncome(monthlyIncome);
       setExpenses(monthlyExpenses);
     } catch (error) {
@@ -129,6 +130,10 @@ const Index = () => {
         description: "Failed to load your financial data",
         variant: "destructive",
       });
+      // Set default values in case of error
+      setBalance(0);
+      setIncome(0);
+      setExpenses(0);
     } finally {
       setIsLoading(false);
     }
@@ -158,11 +163,11 @@ const Index = () => {
 
           const income = transactions
             ?.filter(t => t.recipient_id === currentUser.id && t.status === 'completed')
-            .reduce((sum, t) => sum + Number(t.amount), 0) || 0;
+            .reduce((sum, t) => sum + (Number(t.amount) || 0), 0) || 0;
 
           const expenses = transactions
             ?.filter(t => t.user_id === currentUser.id && t.status === 'completed')
-            .reduce((sum, t) => sum + Number(t.amount), 0) || 0;
+            .reduce((sum, t) => sum + (Number(t.amount) || 0), 0) || 0;
 
           return {
             name: format(date, 'MMM'),
@@ -175,6 +180,8 @@ const Index = () => {
       setChartData(monthlyData);
     } catch (error) {
       console.error('Error fetching chart data:', error);
+      // Set empty chart data in case of error
+      setChartData([]);
     }
   };
 
