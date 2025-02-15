@@ -28,6 +28,10 @@ const Index = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  const formatCurrency = (amount: number) => {
+    return `₹${amount.toLocaleString('en-IN', { maximumFractionDigits: 2 })}`;
+  };
+
   useEffect(() => {
     const initializeUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -269,7 +273,7 @@ const Index = () => {
           </div>
           <p className="text-sm text-muted-foreground">Total Balance</p>
           <h2 className="text-2xl font-bold text-white">
-            {isLoading ? "Loading..." : `₹${balance.toLocaleString()}`}
+            {isLoading ? "Loading..." : formatCurrency(balance)}
           </h2>
           <p className="text-sm text-green-500">Updated just now</p>
         </Card>
@@ -283,7 +287,7 @@ const Index = () => {
           </div>
           <p className="text-sm text-muted-foreground">Income</p>
           <h2 className="text-2xl font-bold text-white">
-            {isLoading ? "Loading..." : `₹${income.toLocaleString()}`}
+            {isLoading ? "Loading..." : formatCurrency(income)}
           </h2>
           <p className="text-sm text-green-500">This month</p>
         </Card>
@@ -297,7 +301,7 @@ const Index = () => {
           </div>
           <p className="text-sm text-muted-foreground">Expenses</p>
           <h2 className="text-2xl font-bold text-white">
-            {isLoading ? "Loading..." : `₹${expenses.toLocaleString()}`}
+            {isLoading ? "Loading..." : formatCurrency(expenses)}
           </h2>
           <p className="text-sm text-red-500">This month</p>
         </Card>
