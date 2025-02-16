@@ -1,3 +1,4 @@
+
 import { Card } from "@/components/ui/card";
 import { DollarSign, PieChart, ArrowUpRight, ArrowDownRight, Send, Download, Users, Wallet, Scan } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
@@ -18,9 +19,9 @@ const quickActions = [
 
 const Index = () => {
   const [isQRScannerOpen, setIsQRScannerOpen] = useState(false);
-  const [balance] = useState(5000);
-  const [income] = useState(20000);
-  const [expenses, setExpenses] = useState(0);
+  const [balance] = useState(5000);  // Fixed balance of ₹5,000
+  const [income] = useState(20000);  // Fixed income of ₹20,000
+  const [expenses, setExpenses] = useState(15000);  // Initial expenses value
   const [isLoading, setIsLoading] = useState(true);
   const [chartData, setChartData] = useState([]);
   const [recentTransactions, setRecentTransactions] = useState([]);
@@ -104,9 +105,8 @@ const Index = () => {
       // Calculate monthly expenses (sent money)
       const monthlyExpenses = transactions
         ?.filter(t => t.user_id === user.id && t.status === 'completed')
-        .reduce((sum, t) => sum + (Number(t.amount) || 0), 0) || 0;
+        .reduce((sum, t) => sum + (Number(t.amount) || 0), 0) || 15000; // Default to 15000 if no transactions
 
-      // Set expenses based on actual transaction data
       setExpenses(monthlyExpenses);
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -115,7 +115,7 @@ const Index = () => {
         description: "Failed to load your financial data",
         variant: "destructive",
       });
-      setExpenses(0);
+      setExpenses(15000); // Default to 15000 in case of error
     } finally {
       setIsLoading(false);
     }
