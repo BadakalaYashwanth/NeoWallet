@@ -1,53 +1,87 @@
 
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/components/AuthProvider";
+import { useAuth } from "@/components/AuthProvider";
 import Sidebar from "@/components/Sidebar";
-import Index from "./pages/Index";
-import Analytics from "./pages/Analytics";
-import Transactions from "./pages/Transactions";
-import Notifications from "./pages/Notifications";
-import Profile from "./pages/Profile";
-import Settings from "./pages/Settings";
-import SendMoney from "./pages/Send";
-import ReceiveMoney from "./pages/Receive";
-import SplitBills from "./pages/Split";
-import Banking from "./pages/Banking";
-import Budget from "./pages/Budget";
+import Auth from "@/pages/Auth";
+import Send from "@/pages/Send";
+import Receive from "@/pages/Receive";
+import Split from "@/pages/Split";
+import Transactions from "@/pages/Transactions";
 
-const queryClient = new QueryClient();
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, isLoading } = useAuth();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <div className="flex min-h-screen bg-background">
-          <Sidebar />
-          <main className="flex-1 ml-64 p-8">
-            <div className="max-w-7xl mx-auto">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/analytics" element={<Analytics />} />
-                <Route path="/budget" element={<Budget />} />
-                <Route path="/transactions" element={<Transactions />} />
-                <Route path="/notifications" element={<Notifications />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/send" element={<SendMoney />} />
-                <Route path="/receive" element={<ReceiveMoney />} />
-                <Route path="/split" element={<SplitBills />} />
-                <Route path="/banking" element={<Banking />} />
-              </Routes>
-            </div>
-          </main>
-        </div>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return <Navigate to="/auth" />;
+  }
+
+  return (
+    <div className="flex min-h-screen bg-gradient-to-br from-black to-purple-900">
+      <Sidebar />
+      <main className="flex-1 p-8 ml-64">
+        {children}
+      </main>
+    </div>
+  );
+};
+
+function App() {
+  return (
+    <Router>
+      <AuthProvider>
+        <Routes>
+          <Route path="/auth" element={<Auth />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Transactions />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/send"
+            element={
+              <ProtectedRoute>
+                <Send />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/receive"
+            element={
+              <ProtectedRoute>
+                <Receive />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/split"
+            element={
+              <ProtectedRoute>
+                <Split />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/transactions"
+            element={
+              <ProtectedRoute>
+                <Transactions />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+        <Toaster />
+      </AuthProvider>
+    </Router>
+  );
+}
 
 export default App;
