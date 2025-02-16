@@ -18,8 +18,8 @@ const quickActions = [
 
 const Index = () => {
   const [isQRScannerOpen, setIsQRScannerOpen] = useState(false);
-  const [balance, setBalance] = useState(0);
-  const [income, setIncome] = useState(0);
+  const [balance] = useState(5000);
+  const [income] = useState(20000);
   const [expenses, setExpenses] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [chartData, setChartData] = useState([]);
@@ -84,18 +84,6 @@ const Index = () => {
         return;
       }
 
-      // Get current balance
-      const { data: balanceData, error: balanceError } = await supabase
-        .from('users_balances')
-        .select('balance')
-        .eq('id', user.id)
-        .single();
-
-      if (balanceError) {
-        console.error('Error fetching balance:', balanceError);
-        throw balanceError;
-      }
-
       // Get all transactions for the current month
       const startOfMonth = new Date();
       startOfMonth.setDate(1);
@@ -113,19 +101,12 @@ const Index = () => {
         throw transactionsError;
       }
 
-      // Calculate monthly income (received money)
-      const monthlyIncome = transactions
-        ?.filter(t => t.recipient_id === user.id && t.status === 'completed')
-        .reduce((sum, t) => sum + (Number(t.amount) || 0), 0) || 0;
-
       // Calculate monthly expenses (sent money)
       const monthlyExpenses = transactions
         ?.filter(t => t.user_id === user.id && t.status === 'completed')
         .reduce((sum, t) => sum + (Number(t.amount) || 0), 0) || 0;
 
-      // Ensure we have valid numbers before setting state
-      setBalance(Number(balanceData?.balance) || 0);
-      setIncome(monthlyIncome);
+      // Set expenses based on actual transaction data
       setExpenses(monthlyExpenses);
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -134,9 +115,6 @@ const Index = () => {
         description: "Failed to load your financial data",
         variant: "destructive",
       });
-      // Set default values in case of error
-      setBalance(0);
-      setIncome(0);
       setExpenses(0);
     } finally {
       setIsLoading(false);
@@ -184,7 +162,6 @@ const Index = () => {
       setChartData(monthlyData);
     } catch (error) {
       console.error('Error fetching chart data:', error);
-      // Set empty chart data in case of error
       setChartData([]);
     }
   };
