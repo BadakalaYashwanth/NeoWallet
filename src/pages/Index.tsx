@@ -1,3 +1,4 @@
+
 import { Card } from "@/components/ui/card";
 import { 
   LineChart, 
@@ -7,9 +8,11 @@ import {
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
-  Legend
+  Legend,
+  TooltipProps
 } from "recharts";
 import { ArrowUpRight, ArrowDownRight, Wallet, TrendingUp, TrendingDown, PiggyBank } from "lucide-react";
+import { ValueType } from "recharts/types/component/DefaultTooltipContent";
 
 // Mock data for the transaction history
 const transactionHistory = [
@@ -29,6 +32,13 @@ const Index = () => {
   const monthlyExpenses = 38000;
   const monthlySavings = monthlyIncome - monthlyExpenses;
   const savingsPercentage = ((monthlySavings / monthlyIncome) * 100).toFixed(1);
+
+  const formatTooltipValue = (value: ValueType) => {
+    if (typeof value === 'number') {
+      return [`₹${Math.abs(value).toLocaleString()}`, ''];
+    }
+    return ['₹0', ''];
+  };
 
   return (
     <div className="space-y-8">
@@ -126,7 +136,7 @@ const Index = () => {
                   border: '1px solid rgba(255, 255, 255, 0.1)',
                   borderRadius: '8px'
                 }}
-                formatter={(value) => [`₹${Math.abs(value).toLocaleString()}`, '']}
+                formatter={formatTooltipValue}
               />
               <Legend />
               <Line
