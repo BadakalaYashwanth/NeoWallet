@@ -69,15 +69,15 @@ const Transactions = () => {
   return (
     <div className="space-y-8">
       <header>
-        <h1 className="text-4xl font-bold text-primary">Transactions</h1>
+        <h1 className="text-4xl font-bold text-white">Transactions</h1>
         <p className="text-secondary-foreground">Recent financial activity</p>
       </header>
 
       <Card className="glass-card p-6">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold">Recent Transactions</h3>
+          <h3 className="text-lg font-semibold text-white">Recent Transactions</h3>
           <div className="flex gap-2">
-            <select className="bg-white/5 text-white border border-white/10 rounded-lg px-3 py-2">
+            <select className="bg-purple-500 text-white border border-purple-600 rounded-lg px-3 py-2">
               <option value="all">All Types</option>
               <option value="send">Sent</option>
               <option value="receive">Received</option>

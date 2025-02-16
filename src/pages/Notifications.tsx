@@ -79,9 +79,9 @@ const NotificationCard = ({ notification }: { notification: typeof mockNotificat
       <div className="flex-1">
         <div className="flex items-center justify-between">
           <h3 className="font-medium text-white">{notification.title}</h3>
-          <span className="text-xs text-gray-400">{notification.time}</span>
+          <span className="text-xs text-white/70">{notification.time}</span>
         </div>
-        <p className="text-sm text-gray-400 mt-1">{notification.description}</p>
+        <p className="text-sm text-white/80 mt-1">{notification.description}</p>
       </div>
     </div>
   );
@@ -105,12 +105,12 @@ const Notifications = () => {
     <div className="space-y-8">
       <header className="flex justify-between items-center">
         <div>
-          <h1 className="text-4xl font-bold text-primary">Notifications</h1>
-          <p className="text-secondary-foreground">Stay updated with your account activity</p>
+          <h1 className="text-4xl font-bold text-white">Notifications</h1>
+          <p className="text-white/80">Stay updated with your account activity</p>
         </div>
         <button
           onClick={markAllAsRead}
-          className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+          className="px-4 py-2 bg-white text-purple-500 rounded-lg hover:bg-white/90 transition-colors"
         >
           Mark all as read
         </button>
@@ -131,7 +131,7 @@ const Notifications = () => {
               className={`px-4 py-2 rounded-lg whitespace-nowrap ${
                 filter === type.id
                   ? "bg-purple-500 text-white"
-                  : "bg-white/5 text-gray-400 hover:bg-white/10"
+                  : "bg-white/5 text-white hover:bg-white/10"
               }`}
             >
               {type.label}
@@ -146,8 +146,8 @@ const Notifications = () => {
             ))
           ) : (
             <div className="text-center py-8">
-              <Bell className="h-12 w-12 text-gray-500 mx-auto mb-4" />
-              <p className="text-gray-400">No notifications to show</p>
+              <Bell className="h-12 w-12 text-white/50 mx-auto mb-4" />
+              <p className="text-white/70">No notifications to show</p>
             </div>
           )}
         </div>
