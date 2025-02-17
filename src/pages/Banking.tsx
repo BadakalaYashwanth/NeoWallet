@@ -1,11 +1,7 @@
-import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/components/AuthProvider";
-import { supabase } from "@/integrations/supabase/client";
 import { 
   CreditCard, 
   Building, 
@@ -17,105 +13,48 @@ import {
   ChevronRight,
   PlusCircle,
   Clock,
-  AlertTriangle,
-  Loader2
+  AlertTriangle
 } from "lucide-react";
 
-type LinkedBank = {
-  id: number;
-  name: string;
-  accountNumber: string;
-  balance: number;
-  type: string;
-};
+// Mock data for linked banks
+const linkedBanks = [
+  {
+    id: 1,
+    name: "State Bank",
+    accountNumber: "XXXX4389",
+    balance: 45000,
+    type: "Savings",
+  },
+  {
+    id: 2,
+    name: "HDFC Bank",
+    accountNumber: "XXXX2156",
+    balance: 28000,
+    type: "Current",
+  }
+];
 
-type UpcomingPayment = {
-  id: number;
-  title: string;
-  amount: number;
-  dueDate: string;
-  type: string;
-  status: string;
-};
-
-type Wallet = {
-  id: string;
-  balance: number;
-  currency: string;
-  updated_at: string;
-};
+// Mock data for upcoming payments
+const upcomingPayments = [
+  {
+    id: 1,
+    title: "Electricity Bill",
+    amount: 2500,
+    dueDate: "2024-03-20",
+    type: "utility",
+    status: "pending"
+  },
+  {
+    id: 2,
+    title: "Home Loan EMI",
+    amount: 15000,
+    dueDate: "2024-03-25",
+    type: "loan",
+    status: "scheduled"
+  }
+];
 
 const Banking = () => {
-  const { user } = useAuth();
-  const { toast } = useToast();
-  const [wallet, setWallet] = useState<Wallet | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const linkedBanks = [
-    {
-      id: 1,
-      name: "State Bank",
-      accountNumber: "XXXX4389",
-      balance: 45000,
-      type: "Savings",
-    },
-    {
-      id: 2,
-      name: "HDFC Bank",
-      accountNumber: "XXXX2156",
-      balance: 28000,
-      type: "Current",
-    }
-  ];
-
-  const upcomingPayments = [
-    {
-      id: 1,
-      title: "Electricity Bill",
-      amount: 2500,
-      dueDate: "2024-03-20",
-      type: "utility",
-      status: "pending"
-    },
-    {
-      id: 2,
-      title: "Home Loan EMI",
-      amount: 15000,
-      dueDate: "2024-03-25",
-      type: "loan",
-      status: "scheduled"
-    }
-  ];
-
-  useEffect(() => {
-    const fetchWallet = async () => {
-      try {
-        if (!user) return;
-
-        const { data, error } = await supabase
-          .from('wallets')
-          .select('*')
-          .eq('user_id', user.id)
-          .single();
-
-        if (error) throw error;
-
-        setWallet(data);
-      } catch (error: any) {
-        console.error('Error fetching wallet:', error);
-        toast({
-          title: "Error",
-          description: "Failed to load wallet data",
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchWallet();
-  }, [user]);
-
   return (
     <div className="space-y-8">
       <header>
@@ -176,33 +115,16 @@ const Banking = () => {
 
       {/* Main Banking Interface */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Wallet and Linked Accounts */}
+        {/* Linked Accounts */}
         <Card className="glass-card p-6 md:col-span-2">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-semibold text-white">Wallet & Linked Accounts</h3>
+            <h3 className="text-lg font-semibold text-white">Linked Accounts</h3>
             <Button variant="outline" size="sm" className="gap-2">
               <PlusCircle className="h-4 w-4" />
               Add Account
             </Button>
           </div>
           
-          {/* Wallet Card */}
-          <div className="mb-6 p-4 bg-gradient-to-br from-purple-500/20 to-purple-700/20 rounded-lg border border-purple-500/20">
-            <div className="flex justify-between items-center mb-2">
-              <div className="flex items-center space-x-3">
-                <Banknote className="h-5 w-5 text-purple-400" />
-                <h4 className="font-medium text-white">NeoWallet Balance</h4>
-              </div>
-              {isLoading ? (
-                <Loader2 className="h-5 w-5 text-purple-400 animate-spin" />
-              ) : null}
-            </div>
-            <p className="text-2xl font-bold text-white mt-2">
-              ₹{wallet?.balance.toLocaleString() ?? '0.00'}
-            </p>
-          </div>
-          
-          {/* Linked Banks List */}
           <div className="space-y-4">
             {linkedBanks.map((bank) => (
               <div key={bank.id} className="p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors">
