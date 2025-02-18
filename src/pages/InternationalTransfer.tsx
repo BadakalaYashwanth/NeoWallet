@@ -1,26 +1,13 @@
 
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, ArrowRightLeft } from "lucide-react";
-
-interface Currency {
-  id: string;
-  name: string;
-  symbol: string;
-  rate: number;
-}
+import { CurrencyInput } from "@/components/international-transfer/CurrencyInput";
+import { TransactionDetails } from "@/components/international-transfer/TransactionDetails";
+import { Currency } from "@/types/currency";
 
 const InternationalTransfer = () => {
   const { toast } = useToast();
@@ -158,45 +145,21 @@ const InternationalTransfer = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
-              <div>
-                <Label htmlFor="amount">Amount</Label>
-                <div className="flex items-center space-x-2">
-                  <div className="relative flex-1">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                      {getCurrencySymbol(formData.sourceCurrency)}
-                    </span>
-                    <Input
-                      id="amount"
-                      type="number"
-                      value={formData.amount}
-                      onChange={(e) => {
-                        setFormData({ ...formData, amount: e.target.value });
-                        setConvertedAmount(null);
-                      }}
-                      className="pl-8"
-                      placeholder="0.00"
-                    />
-                  </div>
-                  <Select
-                    value={formData.sourceCurrency}
-                    onValueChange={(value) => {
-                      setFormData({ ...formData, sourceCurrency: value });
-                      setConvertedAmount(null);
-                    }}
-                  >
-                    <SelectTrigger className="w-[100px]">
-                      <SelectValue placeholder="Currency" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {currencies.map((currency) => (
-                        <SelectItem key={currency.id} value={currency.id}>
-                          {currency.id}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
+              <CurrencyInput
+                label="Amount"
+                value={formData.amount}
+                currency={formData.sourceCurrency}
+                currencies={currencies}
+                symbol={getCurrencySymbol(formData.sourceCurrency)}
+                onValueChange={(value) => {
+                  setFormData({ ...formData, amount: value });
+                  setConvertedAmount(null);
+                }}
+                onCurrencyChange={(value) => {
+                  setFormData({ ...formData, sourceCurrency: value });
+                  setConvertedAmount(null);
+                }}
+              />
 
               <div className="flex justify-center">
                 <Button
@@ -216,40 +179,19 @@ const InternationalTransfer = () => {
                 </Button>
               </div>
 
-              <div>
-                <Label>Converted Amount</Label>
-                <div className="flex items-center space-x-2">
-                  <div className="relative flex-1">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                      {getCurrencySymbol(formData.targetCurrency)}
-                    </span>
-                    <Input
-                      readOnly
-                      value={convertedAmount?.toFixed(2) || ''}
-                      className="pl-8"
-                      placeholder="0.00"
-                    />
-                  </div>
-                  <Select
-                    value={formData.targetCurrency}
-                    onValueChange={(value) => {
-                      setFormData({ ...formData, targetCurrency: value });
-                      setConvertedAmount(null);
-                    }}
-                  >
-                    <SelectTrigger className="w-[100px]">
-                      <SelectValue placeholder="Currency" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {currencies.map((currency) => (
-                        <SelectItem key={currency.id} value={currency.id}>
-                          {currency.id}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
+              <CurrencyInput
+                label="Converted Amount"
+                value={convertedAmount?.toFixed(2) || ''}
+                currency={formData.targetCurrency}
+                currencies={currencies}
+                symbol={getCurrencySymbol(formData.targetCurrency)}
+                readOnly
+                onValueChange={() => {}}
+                onCurrencyChange={(value) => {
+                  setFormData({ ...formData, targetCurrency: value });
+                  setConvertedAmount(null);
+                }}
+              />
 
               <Button
                 type="button"
@@ -262,27 +204,12 @@ const InternationalTransfer = () => {
               </Button>
             </div>
 
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="recipientId">Recipient ID</Label>
-                <Input
-                  id="recipientId"
-                  value={formData.recipientId}
-                  onChange={(e) => setFormData({ ...formData, recipientId: e.target.value })}
-                  placeholder="Enter recipient's ID"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="description">Description</Label>
-                <Input
-                  id="description"
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="What's this transfer for?"
-                />
-              </div>
-            </div>
+            <TransactionDetails
+              recipientId={formData.recipientId}
+              description={formData.description}
+              onRecipientIdChange={(value) => setFormData({ ...formData, recipientId: value })}
+              onDescriptionChange={(value) => setFormData({ ...formData, description: value })}
+            />
           </div>
 
           <Button

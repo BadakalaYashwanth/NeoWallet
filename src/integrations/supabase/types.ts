@@ -35,46 +35,70 @@ export type Database = {
       }
       international_transactions: {
         Row: {
+          agreement_details: Json | null
           amount_source: number
           amount_target: number
+          compliance_check_status: string | null
           created_at: string | null
           currency_source: string
           currency_target: string
           description: string | null
+          fraud_score: number | null
           id: string
+          kyc_status: string | null
+          processing_details: Json | null
           recipient_id: string
+          risk_level: string | null
           sender_id: string
+          settlement_status: string | null
           status: string
           type: string
           updated_at: string | null
+          verification_status: string | null
         }
         Insert: {
+          agreement_details?: Json | null
           amount_source: number
           amount_target: number
+          compliance_check_status?: string | null
           created_at?: string | null
           currency_source: string
           currency_target: string
           description?: string | null
+          fraud_score?: number | null
           id?: string
+          kyc_status?: string | null
+          processing_details?: Json | null
           recipient_id: string
+          risk_level?: string | null
           sender_id: string
+          settlement_status?: string | null
           status?: string
           type: string
           updated_at?: string | null
+          verification_status?: string | null
         }
         Update: {
+          agreement_details?: Json | null
           amount_source?: number
           amount_target?: number
+          compliance_check_status?: string | null
           created_at?: string | null
           currency_source?: string
           currency_target?: string
           description?: string | null
+          fraud_score?: number | null
           id?: string
+          kyc_status?: string | null
+          processing_details?: Json | null
           recipient_id?: string
+          risk_level?: string | null
           sender_id?: string
+          settlement_status?: string | null
           status?: string
           type?: string
           updated_at?: string | null
+          verification_status?: string | null
         }
         Relationships: [
           {
@@ -326,6 +350,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_transaction_risk: {
+        Args: {
+          p_amount: number
+          p_sender_id: string
+          p_recipient_id: string
+          p_currency_source: string
+          p_currency_target: string
+        }
+        Returns: number
+      }
       convert_currency: {
         Args: {
           amount: number
