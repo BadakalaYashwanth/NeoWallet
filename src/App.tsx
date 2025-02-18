@@ -16,6 +16,7 @@ import ReceiveMoney from "./pages/Receive";
 import SplitBills from "./pages/Split";
 import Banking from "./pages/Banking";
 import Budget from "./pages/Budget";
+import InternationalTransfer from "./pages/InternationalTransfer";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ const App = () => (
                 <Route path="/receive" element={<ReceiveMoney />} />
                 <Route path="/split" element={<SplitBills />} />
                 <Route path="/banking" element={<Banking />} />
+                <Route path="/international" element={<InternationalTransfer />} />
               </Routes>
             </div>
           </main>

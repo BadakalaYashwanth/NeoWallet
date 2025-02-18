@@ -9,6 +9,90 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      currencies: {
+        Row: {
+          id: string
+          last_updated: string | null
+          name: string
+          rate: number
+          symbol: string
+        }
+        Insert: {
+          id: string
+          last_updated?: string | null
+          name: string
+          rate?: number
+          symbol: string
+        }
+        Update: {
+          id?: string
+          last_updated?: string | null
+          name?: string
+          rate?: number
+          symbol?: string
+        }
+        Relationships: []
+      }
+      international_transactions: {
+        Row: {
+          amount_source: number
+          amount_target: number
+          created_at: string | null
+          currency_source: string
+          currency_target: string
+          description: string | null
+          id: string
+          recipient_id: string
+          sender_id: string
+          status: string
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          amount_source: number
+          amount_target: number
+          created_at?: string | null
+          currency_source: string
+          currency_target: string
+          description?: string | null
+          id?: string
+          recipient_id: string
+          sender_id: string
+          status?: string
+          type: string
+          updated_at?: string | null
+        }
+        Update: {
+          amount_source?: number
+          amount_target?: number
+          created_at?: string | null
+          currency_source?: string
+          currency_target?: string
+          description?: string | null
+          id?: string
+          recipient_id?: string
+          sender_id?: string
+          status?: string
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "international_transactions_currency_source_fkey"
+            columns: ["currency_source"]
+            isOneToOne: false
+            referencedRelation: "currencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "international_transactions_currency_target_fkey"
+            columns: ["currency_target"]
+            isOneToOne: false
+            referencedRelation: "currencies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           created_at: string
@@ -242,7 +326,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      convert_currency: {
+        Args: {
+          amount: number
+          from_currency: string
+          to_currency: string
+        }
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never
