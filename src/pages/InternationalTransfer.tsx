@@ -47,7 +47,7 @@ const InternationalTransfer = () => {
         .order('name');
 
       if (error) throw error;
-      setCurrencies(data);
+      setCurrencies(data || []);
     } catch (error) {
       console.error('Error fetching currencies:', error);
       toast({
@@ -93,6 +93,14 @@ const InternationalTransfer = () => {
         throw new Error("Please calculate conversion first");
       }
 
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError) throw userError;
+      if (!user) throw new Error("No user logged in");
+
       const { error } = await supabase
         .from('international_transactions')
         .insert({
@@ -101,6 +109,7 @@ const InternationalTransfer = () => {
           amount_target: convertedAmount,
           currency_target: formData.targetCurrency,
           recipient_id: formData.recipientId,
+          sender_id: user.id,
           type: 'international_transfer',
           description: formData.description,
         });

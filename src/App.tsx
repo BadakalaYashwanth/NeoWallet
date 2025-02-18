@@ -23,37 +23,35 @@ const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <React.StrictMode>
-      <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
-          <TooltipProvider>
-            <div className="flex min-h-screen bg-background">
-              <Sidebar />
-              <main className="flex-1 ml-64 p-8">
-                <div className="max-w-7xl mx-auto">
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/analytics" element={<Analytics />} />
-                    <Route path="/budget" element={<Budget />} />
-                    <Route path="/transactions" element={<Transactions />} />
-                    <Route path="/notifications" element={<Notifications />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/settings" element={<Settings />} />
-                    <Route path="/send" element={<SendMoney />} />
-                    <Route path="/receive" element={<ReceiveMoney />} />
-                    <Route path="/split" element={<SplitBills />} />
-                    <Route path="/banking" element={<Banking />} />
-                    <Route path="/international" element={<InternationalTransfer />} />
-                  </Routes>
-                </div>
-              </main>
-            </div>
-            <Toaster />
-            <Sonner />
-          </TooltipProvider>
-        </QueryClientProvider>
-      </BrowserRouter>
-    </React.StrictMode>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <div className="flex min-h-screen bg-background">
+            <Sidebar />
+            <main className="flex-1 ml-64 p-8">
+              <div className="max-w-7xl mx-auto">
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/analytics" element={<Analytics />} />
+                  <Route path="/budget" element={<Budget />} />
+                  <Route path="/transactions" element={<Transactions />} />
+                  <Route path="/notifications" element={<Notifications />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/send" element={<SendMoney />} />
+                  <Route path="/receive" element={<ReceiveMoney />} />
+                  <Route path="/split" element={<SplitBills />} />
+                  <Route path="/banking" element={<Banking />} />
+                  <Route path="/international" element={<InternationalTransfer />} />
+                </Routes>
+              </div>
+            </main>
+          </div>
+          <Toaster />
+          <Sonner />
+        </TooltipProvider>
+      </QueryClientProvider>
+    </BrowserRouter>
   );
 };
 
