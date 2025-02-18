@@ -4,8 +4,8 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, ArrowRightLeft } from "lucide-react";
-import { CurrencyInput } from "@/components/international-transfer/CurrencyInput";
+import { Loader2 } from "lucide-react";
+import { CurrencyConverter } from "@/components/international-transfer/CurrencyConverter";
 import { TransactionDetails } from "@/components/international-transfer/TransactionDetails";
 import { Currency } from "@/types/currency";
 
@@ -108,7 +108,6 @@ const InternationalTransfer = () => {
         description: "International transfer initiated successfully",
       });
 
-      // Reset form
       setFormData({
         amount: "",
         sourceCurrency: "USD",
@@ -134,6 +133,15 @@ const InternationalTransfer = () => {
     return currency?.symbol || '';
   };
 
+  const handleSwapCurrencies = () => {
+    setFormData({
+      ...formData,
+      sourceCurrency: formData.targetCurrency,
+      targetCurrency: formData.sourceCurrency,
+    });
+    setConvertedAmount(null);
+  };
+
   return (
     <div className="space-y-8">
       <header>
@@ -144,65 +152,28 @@ const InternationalTransfer = () => {
       <Card className="glass-card p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <CurrencyInput
-                label="Amount"
-                value={formData.amount}
-                currency={formData.sourceCurrency}
-                currencies={currencies}
-                symbol={getCurrencySymbol(formData.sourceCurrency)}
-                onValueChange={(value) => {
-                  setFormData({ ...formData, amount: value });
-                  setConvertedAmount(null);
-                }}
-                onCurrencyChange={(value) => {
-                  setFormData({ ...formData, sourceCurrency: value });
-                  setConvertedAmount(null);
-                }}
-              />
-
-              <div className="flex justify-center">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => {
-                    setFormData({
-                      ...formData,
-                      sourceCurrency: formData.targetCurrency,
-                      targetCurrency: formData.sourceCurrency,
-                    });
-                    setConvertedAmount(null);
-                  }}
-                >
-                  <ArrowRightLeft className="h-4 w-4" />
-                </Button>
-              </div>
-
-              <CurrencyInput
-                label="Converted Amount"
-                value={convertedAmount?.toFixed(2) || ''}
-                currency={formData.targetCurrency}
-                currencies={currencies}
-                symbol={getCurrencySymbol(formData.targetCurrency)}
-                readOnly
-                onValueChange={() => {}}
-                onCurrencyChange={(value) => {
-                  setFormData({ ...formData, targetCurrency: value });
-                  setConvertedAmount(null);
-                }}
-              />
-
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full"
-                onClick={calculateConversion}
-                disabled={!formData.amount}
-              >
-                Calculate Conversion
-              </Button>
-            </div>
+            <CurrencyConverter
+              amount={formData.amount}
+              sourceCurrency={formData.sourceCurrency}
+              targetCurrency={formData.targetCurrency}
+              convertedAmount={convertedAmount}
+              currencies={currencies}
+              getCurrencySymbol={getCurrencySymbol}
+              onValueChange={(value) => {
+                setFormData({ ...formData, amount: value });
+                setConvertedAmount(null);
+              }}
+              onSourceCurrencyChange={(value) => {
+                setFormData({ ...formData, sourceCurrency: value });
+                setConvertedAmount(null);
+              }}
+              onTargetCurrencyChange={(value) => {
+                setFormData({ ...formData, targetCurrency: value });
+                setConvertedAmount(null);
+              }}
+              onSwapCurrencies={handleSwapCurrencies}
+              onCalculateConversion={calculateConversion}
+            />
 
             <TransactionDetails
               recipientId={formData.recipientId}
