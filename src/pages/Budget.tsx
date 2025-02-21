@@ -1,4 +1,3 @@
-
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -21,12 +20,11 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { LucideIcon } from "lucide-react";
 
 interface Budget {
   id: string;
   category: string;
-  icon: React.ReactElement;
+  icon: JSX.Element;
   limit: number;
   spent: number;
   color: string;
@@ -37,7 +35,7 @@ interface SavingSuggestion {
   title: string;
   description: string;
   potentialSaving: number;
-  icon: React.ReactElement;
+  icon: JSX.Element;
   type: 'optimization' | 'alert' | 'opportunity';
 }
 
