@@ -1,10 +1,33 @@
-
 import { Card } from "@/components/ui/card";
-import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend, BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area } from "recharts";
-import { ArrowUpRight, ArrowDownRight, AlertTriangle, TrendingUp, BrainCircuit, Users, Shield, Download } from "lucide-react";
+import { 
+  LineChart, 
+  Line, 
+  ResponsiveContainer, 
+  XAxis, 
+  YAxis, 
+  Tooltip, 
+  Legend, 
+  BarChart, 
+  Bar, 
+  PieChart, 
+  Pie, 
+  Cell, 
+  AreaChart, 
+  Area 
+} from "recharts";
+import { 
+  ArrowUpRight, 
+  ArrowDownRight, 
+  AlertTriangle, 
+  TrendingUp, 
+  BrainCircuit, 
+  Users, 
+  Shield, 
+  Download 
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 
-// Enhanced mock data for AI insights
 const monthlyData = [
   { name: "Jan", spending: -1200, income: 5000, budget: 4000, debt: -800, savings: 1000, peerAvg: 3500, forecast: 3800 },
   { name: "Feb", spending: -2100, income: 5200, budget: 4000, debt: -600, savings: 1500, peerAvg: 3600, forecast: 3700 },

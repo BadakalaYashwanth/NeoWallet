@@ -1,4 +1,3 @@
-
 import { Card } from "@/components/ui/card";
 import { 
   LineChart, 
@@ -12,7 +11,7 @@ import {
   TooltipProps
 } from "recharts";
 import { ArrowUpRight, ArrowDownRight, Wallet, TrendingUp, TrendingDown, PiggyBank } from "lucide-react";
-import { ValueType } from "recharts/types/component/DefaultTooltipContent";
+import { ValueType, NameType } from "recharts/types/component/DefaultTooltipContent";
 
 // Mock data for the transaction history
 const transactionHistory = [
@@ -33,7 +32,7 @@ const Index = () => {
   const monthlySavings = monthlyIncome - monthlyExpenses;
   const savingsPercentage = ((monthlySavings / monthlyIncome) * 100).toFixed(1);
 
-  const formatTooltipValue = (value: ValueType) => {
+  const formatTooltipValue = (value: ValueType, _name?: NameType) => {
     if (typeof value === 'number') {
       return [`₹${Math.abs(value).toLocaleString()}`, ''];
     }
