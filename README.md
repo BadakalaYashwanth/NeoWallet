@@ -3,7 +3,7 @@
 ## Overview
 NeoWallet is a modern digital wallet application designed for seamless money transactions, expense tracking, and AI-driven budgeting insights. Its user-friendly interface, inspired by Instagram’s UI/UX, offers a unique and intuitive financial management experience.
 
-Checkout the deployed site: [NeoWallet](https://p-928053.lovable.app/)
+**Checkout the deployed site: [NeoWallet](https://p-928053.lovable.app/) 
 
 **![Image](https://github.com/user-attachments/assets/42585c9d-66e5-4e66-9fe8-ac665f365501)**
 
