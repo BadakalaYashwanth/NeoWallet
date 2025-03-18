@@ -15,7 +15,6 @@ export default defineConfig(({ mode }) => ({
       // Add explicit React version resolution
       jsxImportSource: 'react',
       // Force React 18 features
-      include: "**/*.{jsx,tsx}",
     }),
     mode === 'development' && componentTagger(),
   ].filter(Boolean),
