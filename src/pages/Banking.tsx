@@ -1,3 +1,4 @@
+
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -58,7 +59,7 @@ const Banking = () => {
   return (
     <div className="space-y-8">
       <header>
-        <h1 className="text-4xl font-bold text-primary">Net Banking</h1>
+        <h1 className="text-4xl font-bold text-white">Net Banking</h1>
         <p className="text-secondary-foreground">Manage your bank accounts and transactions</p>
       </header>
 

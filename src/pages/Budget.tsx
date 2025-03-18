@@ -101,7 +101,7 @@ const Budget = () => {
   return (
     <div className="space-y-8">
       <header>
-        <h1 className="text-4xl font-bold text-primary">Budget Planning</h1>
+        <h1 className="text-4xl font-bold text-white">Budget Planning</h1>
         <p className="text-secondary-foreground">Manage your spending limits and track expenses</p>
       </header>
 
