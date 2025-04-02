@@ -6,6 +6,12 @@ import { Input } from "@/components/ui/input";
 import QRScanner from "@/components/QRScanner";
 import { useToast } from "@/components/ui/use-toast";
 import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { 
   CreditCard, 
   Building, 
   Send, 
@@ -416,3 +422,4 @@ const Banking = () => {
 };
 
 export default Banking;
+
