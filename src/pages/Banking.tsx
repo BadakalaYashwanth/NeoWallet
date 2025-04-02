@@ -1,8 +1,10 @@
 
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import QRScanner from "@/components/QRScanner";
+import { useToast } from "@/components/ui/use-toast";
 import { 
   CreditCard, 
   Building, 
@@ -14,7 +16,11 @@ import {
   ChevronRight,
   PlusCircle,
   Clock,
-  AlertTriangle
+  AlertTriangle,
+  QrCode,
+  FilePenLine,
+  Download,
+  BarChart4
 } from "lucide-react";
 
 // Mock data for linked banks
@@ -55,7 +61,63 @@ const upcomingPayments = [
   }
 ];
 
+// Mock transaction history
+const recentTransactions = [
+  {
+    id: 1,
+    title: "Rent Payment",
+    amount: -12000,
+    date: "2024-03-15",
+    category: "Housing"
+  },
+  {
+    id: 2,
+    title: "Salary Credit",
+    amount: 55000,
+    date: "2024-03-01",
+    category: "Income"
+  },
+  {
+    id: 3,
+    title: "Grocery Shopping",
+    amount: -2800,
+    date: "2024-03-12",
+    category: "Food"
+  }
+];
+
+interface PaymentData {
+  recipient: string;
+  accountNo: string;
+  amount: number;
+  description?: string;
+}
+
 const Banking = () => {
+  const { toast } = useToast();
+  const [isQRScannerOpen, setIsQRScannerOpen] = useState(false);
+  const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
+  const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false);
+
+  const handleQRScan = (result: string) => {
+    try {
+      const data = JSON.parse(result) as PaymentData;
+      setPaymentData(data);
+      setShowPaymentConfirmation(true);
+    } catch (error) {
+      console.error("Error parsing QR data:", error);
+    }
+  };
+
+  const handleConfirmPayment = () => {
+    toast({
+      title: "Payment Successful",
+      description: `₹${paymentData?.amount} sent to ${paymentData?.recipient}`,
+    });
+    setShowPaymentConfirmation(false);
+    setPaymentData(null);
+  };
+
   return (
     <div className="space-y-8">
       <header>
@@ -64,7 +126,7 @@ const Banking = () => {
       </header>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card className="glass-card p-4 hover:bg-white/5 transition-colors cursor-pointer">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-purple-500/20 rounded-lg">
@@ -89,14 +151,14 @@ const Banking = () => {
           </div>
         </Card>
 
-        <Card className="glass-card p-4 hover:bg-white/5 transition-colors cursor-pointer">
+        <Card className="glass-card p-4 hover:bg-white/5 transition-colors cursor-pointer" onClick={() => setIsQRScannerOpen(true)}>
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-green-500/20 rounded-lg">
-              <Calendar className="h-5 w-5 text-green-400" />
+              <QrCode className="h-5 w-5 text-green-400" />
             </div>
             <div>
-              <h3 className="font-medium text-white">Schedule Payment</h3>
-              <p className="text-sm text-gray-400">Set Future Transfers</p>
+              <h3 className="font-medium text-white">Scan & Pay</h3>
+              <p className="text-sm text-gray-400">QR Code Payments</p>
             </div>
           </div>
         </Card>
@@ -108,7 +170,58 @@ const Banking = () => {
             </div>
             <div>
               <h3 className="font-medium text-white">Virtual Card</h3>
-              <p className="text-sm text-gray-400">Generate Instant</p>
+              <p className="text-sm text-gray-400">Generate Instantly</p>
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      {/* Advanced Banking Options */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Card className="glass-card p-4 hover:bg-white/5 transition-colors cursor-pointer">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-red-500/20 rounded-lg">
+              <Calendar className="h-5 w-5 text-red-400" />
+            </div>
+            <div>
+              <h3 className="font-medium text-white">Schedule Payments</h3>
+              <p className="text-sm text-gray-400">Future Transactions</p>
+            </div>
+          </div>
+        </Card>
+        
+        <Card className="glass-card p-4 hover:bg-white/5 transition-colors cursor-pointer">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-indigo-500/20 rounded-lg">
+              <FilePenLine className="h-5 w-5 text-indigo-400" />
+            </div>
+            <div>
+              <h3 className="font-medium text-white">Standing Orders</h3>
+              <p className="text-sm text-gray-400">Recurring Payments</p>
+            </div>
+          </div>
+        </Card>
+
+        <Card className="glass-card p-4 hover:bg-white/5 transition-colors cursor-pointer">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-teal-500/20 rounded-lg">
+              <Download className="h-5 w-5 text-teal-400" />
+            </div>
+            <div>
+              <h3 className="font-medium text-white">Statement</h3>
+              <p className="text-sm text-gray-400">Download PDF/Excel</p>
+            </div>
+          </div>
+        </Card>
+
+        <Card className="glass-card p-4 hover:bg-white/5 transition-colors cursor-pointer">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-pink-500/20 rounded-lg">
+              <BarChart4 className="h-5 w-5 text-pink-400" />
+            </div>
+            <div>
+              <h3 className="font-medium text-white">Spending Analytics</h3>
+              <p className="text-sm text-gray-400">Track Expenses</p>
             </div>
           </div>
         </Card>
@@ -176,6 +289,36 @@ const Banking = () => {
         </Card>
       </div>
 
+      {/* Recent Transactions */}
+      <Card className="glass-card p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-lg font-semibold text-white">Recent Transactions</h3>
+          <Button variant="outline" size="sm">View All</Button>
+        </div>
+        <div className="space-y-4">
+          {recentTransactions.map((transaction) => (
+            <div key={transaction.id} className="p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h4 className="font-medium text-white">{transaction.title}</h4>
+                  <div className="flex items-center space-x-2 mt-1">
+                    <p className="text-sm text-gray-400">{transaction.date}</p>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-gray-300">
+                      {transaction.category}
+                    </span>
+                  </div>
+                </div>
+                <p className={`font-medium ${
+                  transaction.amount > 0 ? 'text-green-400' : 'text-red-400'
+                }`}>
+                  {transaction.amount > 0 ? '+' : ''}₹{transaction.amount.toLocaleString()}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Card>
+
       {/* Security Status */}
       <Card className="glass-card p-6">
         <div className="flex items-center space-x-2 mb-6">
@@ -220,6 +363,54 @@ const Banking = () => {
           </div>
         </div>
       </Card>
+
+      {/* QR Scanner Component */}
+      <QRScanner 
+        isOpen={isQRScannerOpen}
+        onClose={() => setIsQRScannerOpen(false)}
+        onScan={handleQRScan}
+      />
+
+      {/* Payment Confirmation Modal */}
+      {showPaymentConfirmation && paymentData && (
+        <Dialog open={showPaymentConfirmation} onOpenChange={setShowPaymentConfirmation}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Confirm Payment</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="p-4 bg-white/5 rounded-lg">
+                <div className="grid grid-cols-2 gap-2">
+                  <p className="text-sm text-gray-400">Recipient:</p>
+                  <p className="text-sm text-white">{paymentData.recipient}</p>
+                  
+                  <p className="text-sm text-gray-400">Account:</p>
+                  <p className="text-sm text-white">{paymentData.accountNo}</p>
+                  
+                  <p className="text-sm text-gray-400">Amount:</p>
+                  <p className="text-sm text-white">₹{paymentData.amount.toLocaleString()}</p>
+                  
+                  {paymentData.description && (
+                    <>
+                      <p className="text-sm text-gray-400">Description:</p>
+                      <p className="text-sm text-white">{paymentData.description}</p>
+                    </>
+                  )}
+                </div>
+              </div>
+              
+              <div className="flex justify-end space-x-2">
+                <Button variant="outline" onClick={() => setShowPaymentConfirmation(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleConfirmPayment}>
+                  Confirm Payment
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
