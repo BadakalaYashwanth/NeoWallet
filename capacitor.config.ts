@@ -9,7 +9,12 @@ const config: CapacitorConfig = {
     url: 'https://416830f4-2fd7-46e0-be25-f30b0fc53b73.lovableproject.com?forceHideBadge=true',
     cleartext: true
   },
-  bundledWebRuntime: false
+  bundledWebRuntime: false,
+  plugins: {
+    CapacitorHttp: {
+      enabled: true
+    }
+  }
 };
 
 export default config;
