@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { QrCode, Send, User, Wallet, CreditCard, CheckCircle2, Scan } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import QRScanner from "@/components/QRScanner";
+import { useLocation } from "react-router-dom";
 
 // Mock user data for testing
 const mockRecipients = [
@@ -23,6 +24,7 @@ const paymentMethods = [
 
 const SendMoney = () => {
   const { toast } = useToast();
+  const location = useLocation();
   const [step, setStep] = useState(1);
   const [selectedRecipient, setSelectedRecipient] = useState<typeof mockRecipients[0] | null>(null);
   const [amount, setAmount] = useState("");
@@ -31,16 +33,74 @@ const SendMoney = () => {
   const [pin, setPin] = useState("");
   const [isQRScannerOpen, setIsQRScannerOpen] = useState(false);
 
+  // Process QR scan data from dashboard if available
+  useEffect(() => {
+    if (location.state?.paymentData) {
+      try {
+        const paymentData = location.state.paymentData;
+        console.log("QR data received:", paymentData);
+        
+        // Find recipient by walletId
+        const recipient = mockRecipients.find(r => r.walletId === paymentData.walletId);
+        if (recipient) {
+          setSelectedRecipient(recipient);
+          
+          // Set amount if provided
+          if (paymentData.amount) {
+            setAmount(paymentData.amount.toString());
+          }
+          
+          // Set note if provided
+          if (paymentData.description) {
+            setNote(paymentData.description);
+          }
+          
+          // Move to amount step
+          setStep(2);
+          
+          toast({
+            title: "Payment Details Loaded",
+            description: `Ready to send money to ${recipient.name}`,
+          });
+        } else {
+          toast({
+            title: "Recipient Not Found",
+            description: "Could not find the recipient in your contacts",
+            variant: "destructive",
+          });
+        }
+      } catch (error) {
+        console.error("Error processing payment data:", error);
+        toast({
+          title: "Error",
+          description: "Failed to process payment data",
+          variant: "destructive",
+        });
+      }
+    }
+  }, [location.state, toast]);
+
   const handleScan = (result: string) => {
     try {
       const scannedData = JSON.parse(result);
+      console.log("QR scan result:", scannedData);
+      
+      // Find recipient by walletId
       const recipient = mockRecipients.find(r => r.walletId === scannedData.walletId);
       if (recipient) {
         setSelectedRecipient(recipient);
         if (scannedData.amount) {
           setAmount(scannedData.amount.toString());
         }
+        if (scannedData.description) {
+          setNote(scannedData.description);
+        }
         setStep(2);
+        
+        toast({
+          title: "QR Code Scanned",
+          description: `Ready to send money to ${recipient.name}`,
+        });
       } else {
         toast({
           title: "Invalid QR Code",
@@ -49,6 +109,7 @@ const SendMoney = () => {
         });
       }
     } catch (error) {
+      console.error("Error scanning QR code:", error);
       toast({
         title: "Invalid QR Code",
         description: "Could not process QR code data",
@@ -90,6 +151,7 @@ const SendMoney = () => {
     setPin("");
   };
 
+  
   return (
     <div className="space-y-8">
       <header className="flex justify-between items-center">
