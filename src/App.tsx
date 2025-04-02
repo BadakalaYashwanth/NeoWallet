@@ -17,6 +17,7 @@ import SplitBills from "./pages/Split";
 import Banking from "./pages/Banking";
 import Budget from "./pages/Budget";
 import InternationalTransfer from "./pages/InternationalTransfer";
+import FinancialAssistant from "./pages/FinancialAssistant";
 import * as React from "react";
 
 const queryClient = new QueryClient();
@@ -43,6 +44,7 @@ const App = () => {
                   <Route path="/split" element={<SplitBills />} />
                   <Route path="/banking" element={<Banking />} />
                   <Route path="/international" element={<InternationalTransfer />} />
+                  <Route path="/assistant" element={<FinancialAssistant />} />
                 </Routes>
               </div>
             </main>
