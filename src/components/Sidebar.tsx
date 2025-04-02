@@ -1,12 +1,13 @@
 
 import { useState } from "react";
-import { Home, PieChart, Settings, User, CreditCard, Bell, Send, Download, Users, Wallet, Building, Coins, Menu, X } from "lucide-react";
+import { Home, PieChart, Settings, User, CreditCard, Bell, Send, Download, Users, Wallet, Building, Coins, Menu, X, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const menuItems = [
   { icon: Home, label: "Dashboard", path: "/" },
+  { icon: Bot, label: "Financial Assistant", path: "/assistant" },
   { icon: PieChart, label: "Analytics", path: "/analytics" },
   { icon: Coins, label: "Budget", path: "/budget" },
   { icon: CreditCard, label: "Transactions", path: "/transactions" },
