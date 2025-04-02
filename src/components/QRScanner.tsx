@@ -10,6 +10,9 @@ interface QRScannerProps {
   onClose: () => void;
 }
 
+// Expected QR code format for payments: 
+// {"recipient":"Name","accountNo":"XXXX1234","amount":1000,"description":"Payment for services"}
+
 const QRScanner = ({ onScan, isOpen, onClose }: QRScannerProps) => {
   const { toast } = useToast();
   const qrRef = useRef<HTMLDivElement>(null);
@@ -27,6 +30,13 @@ const QRScanner = ({ onScan, isOpen, onClose }: QRScannerProps) => {
         },
         (decodedText) => {
           try {
+            // Validate if the QR code contains valid payment data
+            const paymentData = JSON.parse(decodedText);
+            
+            if (!paymentData.recipient || !paymentData.accountNo) {
+              throw new Error("Invalid payment QR code");
+            }
+            
             onScan(decodedText);
             onClose();
             toast({
@@ -64,7 +74,7 @@ const QRScanner = ({ onScan, isOpen, onClose }: QRScannerProps) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Scan QR Code</DialogTitle>
+          <DialogTitle>Scan Payment QR Code</DialogTitle>
         </DialogHeader>
         <div className="w-full aspect-square relative">
           <div id="qr-reader" ref={qrRef} className="w-full h-full"></div>
