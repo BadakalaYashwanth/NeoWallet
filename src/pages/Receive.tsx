@@ -1,16 +1,30 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { QrCode, Copy, Wallet, Bell } from "lucide-react";
+import { Copy, Wallet, Share2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import QRCode from "react-qr-code";
 
 const ReceiveMoney = () => {
   const { toast } = useToast();
   const [amount, setAmount] = useState("");
   const [note, setNote] = useState("");
-  const walletId = "NEOW1234567"; // Mock wallet ID
+  const [qrData, setQrData] = useState("");
+  const walletId = "WAL001"; // Mock wallet ID
+  const userName = "Rahul Kumar"; // Mock user name
+
+  // Generate QR code data whenever amount or note changes
+  useEffect(() => {
+    const data = {
+      walletId,
+      recipient: userName,
+      amount: amount ? parseFloat(amount) : "",
+      description: note
+    };
+    setQrData(JSON.stringify(data));
+  }, [amount, note]);
 
   const handleCopyWalletId = () => {
     navigator.clipboard.writeText(walletId);
@@ -18,6 +32,23 @@ const ReceiveMoney = () => {
       title: "Copied!",
       description: "Wallet ID copied to clipboard",
     });
+  };
+
+  const handleShareQR = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: "Payment QR Code",
+        text: `Send money to ${userName} (₹${amount || "0"})`,
+      }).catch(error => {
+        console.error("Error sharing:", error);
+      });
+    } else {
+      toast({
+        title: "Share unavailable",
+        description: "Sharing is not supported on this device",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleRequestMoney = () => {
@@ -60,12 +91,28 @@ const ReceiveMoney = () => {
               </button>
             </div>
 
-            <div className="aspect-square max-w-[200px] mx-auto bg-white p-4 rounded-lg">
-              <QrCode className="w-full h-full text-black" />
+            <div className="flex flex-col items-center">
+              <div className="p-4 bg-white rounded-lg max-w-[200px] mx-auto">
+                <QRCode 
+                  value={qrData}
+                  size={180}
+                  style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                  viewBox={`0 0 256 256`}
+                />
+              </div>
+              <div className="mt-4 flex items-center justify-center">
+                <button
+                  onClick={handleShareQR}
+                  className="flex items-center space-x-2 p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
+                >
+                  <Share2 className="h-4 w-4 text-purple-500" />
+                  <span>Share QR Code</span>
+                </button>
+              </div>
+              <p className="text-sm text-center text-gray-400 mt-4">
+                Anyone can scan this QR code to instantly send money to your wallet
+              </p>
             </div>
-            <p className="text-sm text-center text-gray-400">
-              Scan this QR code to instantly send money to this wallet
-            </p>
           </div>
         </Card>
 
@@ -93,6 +140,12 @@ const ReceiveMoney = () => {
                 className="bg-white/5 border-white/10 text-white"
                 placeholder="What's this for?"
               />
+            </div>
+
+            <div>
+              <p className="text-sm text-gray-400 mb-2">
+                QR code updates automatically based on the amount and note
+              </p>
             </div>
 
             <button
