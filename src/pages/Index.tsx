@@ -1,5 +1,6 @@
 
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { 
   LineChart, 
   Line, 
@@ -11,8 +12,22 @@ import {
   Legend,
   TooltipProps
 } from "recharts";
-import { ArrowUpRight, ArrowDownRight, Wallet, TrendingUp, TrendingDown, PiggyBank } from "lucide-react";
+import { 
+  ArrowUpRight, 
+  ArrowDownRight, 
+  Wallet, 
+  TrendingUp, 
+  TrendingDown, 
+  PiggyBank, 
+  Scan,
+  Send,
+  Download
+} from "lucide-react";
 import { ValueType } from "recharts/types/component/DefaultTooltipContent";
+import { useState } from "react";
+import QRScanner from "@/components/QRScanner";
+import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
 
 // Mock data for the transaction history
 const transactionHistory = [
@@ -26,6 +41,10 @@ const transactionHistory = [
 ];
 
 const Index = () => {
+  const [isQRScannerOpen, setIsQRScannerOpen] = useState(false);
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
   // Calculate total balance and other financial metrics
   const currentBalance = 124500;
   const monthlyIncome = 55000;
@@ -40,12 +59,62 @@ const Index = () => {
     return ['₹0', ''];
   };
 
+  const handleScan = (result: string) => {
+    try {
+      const paymentData = JSON.parse(result);
+      
+      toast({
+        title: "QR Code Scanned",
+        description: "Payment details loaded successfully",
+      });
+
+      // Navigate to send money page with payment data
+      navigate('/send', { state: { paymentData } });
+    } catch (error) {
+      toast({
+        title: "Invalid QR Code",
+        description: "Could not process QR code data",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="space-y-8">
       <header>
         <h1 className="text-4xl font-bold text-white">Dashboard</h1>
         <p className="text-secondary-foreground">Your financial overview</p>
       </header>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-3 gap-4">
+        <Button 
+          variant="outline" 
+          className="glass-card p-6 flex flex-col items-center gap-2 h-auto"
+          onClick={() => navigate('/send')}
+        >
+          <Send className="h-6 w-6 text-blue-500" />
+          <span>Send Money</span>
+        </Button>
+        
+        <Button 
+          variant="outline" 
+          className="glass-card p-6 flex flex-col items-center gap-2 h-auto"
+          onClick={() => setIsQRScannerOpen(true)}
+        >
+          <Scan className="h-6 w-6 text-purple-500" />
+          <span>Scan QR</span>
+        </Button>
+        
+        <Button 
+          variant="outline" 
+          className="glass-card p-6 flex flex-col items-center gap-2 h-auto"
+          onClick={() => navigate('/receive')}
+        >
+          <Download className="h-6 w-6 text-green-500" />
+          <span>Receive Money</span>
+        </Button>
+      </div>
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -168,7 +237,12 @@ const Index = () => {
         </div>
       </Card>
 
-      {/* Add more dashboard components here */}
+      {/* QR Scanner Dialog */}
+      <QRScanner
+        isOpen={isQRScannerOpen}
+        onClose={() => setIsQRScannerOpen(false)}
+        onScan={handleScan}
+      />
     </div>
   );
 };
