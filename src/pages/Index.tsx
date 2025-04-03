@@ -21,7 +21,8 @@ import {
   PiggyBank, 
   QrCode,
   Send,
-  Download
+  Download,
+  Calculator
 } from "lucide-react";
 import { ValueType } from "recharts/types/component/DefaultTooltipContent";
 import { useState } from "react";
@@ -87,7 +88,7 @@ const Index = () => {
       </header>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-4 gap-4">
         <Button 
           variant="outline" 
           className="glass-card p-6 flex flex-col items-center gap-2 h-auto"
@@ -115,6 +116,17 @@ const Index = () => {
         >
           <Download className="h-6 w-6 text-green-500" />
           <span>Receive Money</span>
+        </Button>
+
+        <Button 
+          variant="outline" 
+          className="glass-card p-6 flex flex-col items-center gap-2 h-auto relative overflow-hidden group"
+          onClick={() => navigate('/calculator')}
+        >
+          <div className="absolute inset-0 bg-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <Calculator className="h-6 w-6 text-orange-500 group-hover:scale-110 transition-transform" />
+          <span className="font-medium">Calculator</span>
+          <span className="text-xs text-gray-400 hidden md:block">Ctrl+C</span>
         </Button>
       </div>
 
