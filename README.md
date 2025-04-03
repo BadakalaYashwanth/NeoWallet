@@ -78,8 +78,5 @@ Experience NeoWallet live: [NeoWallet Deployment](https://p-928053.lovable.app/)
 ## 🤝 Contributions
 We welcome contributions! Feel free to fork this repository and submit pull requests to improve NeoWallet.
 
-## 📜 License
-This project is licensed under the **MIT License**.
-
 ## 📩 Contact
 For any queries or suggestions, reach out via **GitHub Issues**.
