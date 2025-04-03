@@ -19,7 +19,7 @@ import {
   TrendingUp, 
   TrendingDown, 
   PiggyBank, 
-  Scan,
+  QrCode,
   Send,
   Download
 } from "lucide-react";
@@ -99,11 +99,13 @@ const Index = () => {
         
         <Button 
           variant="outline" 
-          className="glass-card p-6 flex flex-col items-center gap-2 h-auto"
+          className="glass-card p-6 flex flex-col items-center gap-2 h-auto relative overflow-hidden group"
           onClick={() => setIsQRScannerOpen(true)}
         >
-          <Scan className="h-6 w-6 text-purple-500" />
-          <span>Scan QR</span>
+          <div className="absolute inset-0 bg-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <QrCode className="h-6 w-6 text-purple-500 group-hover:scale-110 transition-transform" />
+          <span className="font-medium">Scan QR</span>
+          <span className="text-xs text-gray-400 hidden md:block">Quick Access</span>
         </Button>
         
         <Button 
