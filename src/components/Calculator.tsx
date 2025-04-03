@@ -165,11 +165,11 @@ const Calculator = () => {
   );
 
   return (
-    <Card className="w-full max-w-md mx-auto glass-card p-4">
-      <div className="mb-4 bg-black/20 p-4 rounded-md text-right">
-        <div className="text-3xl font-bold text-white truncate">{display}</div>
+    <Card className="w-full max-w-md mx-auto bg-white shadow-lg p-4 border border-gray-200">
+      <div className="mb-4 bg-gray-100 p-4 rounded-md text-right">
+        <div className="text-3xl font-bold text-gray-800 truncate">{display}</div>
         {operator && (
-          <div className="text-sm text-gray-400">
+          <div className="text-sm text-gray-600">
             {firstOperand} {operator}
           </div>
         )}
@@ -177,37 +177,37 @@ const Calculator = () => {
 
       <div className="grid grid-cols-4 gap-2">
         {/* First row */}
-        {calculatorButton('C', clearDisplay, "bg-red-500/20 hover:bg-red-500/30 text-red-500")}
-        {calculatorButton(<RotateCcw size={18} />, handleBackspace)}
-        {calculatorButton(<Percent size={18} />, handlePercentage)}
-        {calculatorButton(<Divide size={18} />, () => handleOperator('/'), "bg-purple-500/20 hover:bg-purple-500/30 text-purple-500")}
+        {calculatorButton('C', clearDisplay, "bg-red-100 hover:bg-red-200 text-red-600")}
+        {calculatorButton(<RotateCcw size={18} />, handleBackspace, "bg-gray-100 hover:bg-gray-200 text-gray-700")}
+        {calculatorButton(<Percent size={18} />, handlePercentage, "bg-gray-100 hover:bg-gray-200 text-gray-700")}
+        {calculatorButton(<Divide size={18} />, () => handleOperator('/'), "bg-purple-100 hover:bg-purple-200 text-purple-600")}
 
         {/* Second row */}
-        {calculatorButton('7', () => inputDigit('7'))}
-        {calculatorButton('8', () => inputDigit('8'))}
-        {calculatorButton('9', () => inputDigit('9'))}
-        {calculatorButton(<X size={18} />, () => handleOperator('*'), "bg-purple-500/20 hover:bg-purple-500/30 text-purple-500")}
+        {calculatorButton('7', () => inputDigit('7'), "bg-gray-50 hover:bg-gray-100 text-gray-800")}
+        {calculatorButton('8', () => inputDigit('8'), "bg-gray-50 hover:bg-gray-100 text-gray-800")}
+        {calculatorButton('9', () => inputDigit('9'), "bg-gray-50 hover:bg-gray-100 text-gray-800")}
+        {calculatorButton(<X size={18} />, () => handleOperator('*'), "bg-purple-100 hover:bg-purple-200 text-purple-600")}
 
         {/* Third row */}
-        {calculatorButton('4', () => inputDigit('4'))}
-        {calculatorButton('5', () => inputDigit('5'))}
-        {calculatorButton('6', () => inputDigit('6'))}
-        {calculatorButton(<Minus size={18} />, () => handleOperator('-'), "bg-purple-500/20 hover:bg-purple-500/30 text-purple-500")}
+        {calculatorButton('4', () => inputDigit('4'), "bg-gray-50 hover:bg-gray-100 text-gray-800")}
+        {calculatorButton('5', () => inputDigit('5'), "bg-gray-50 hover:bg-gray-100 text-gray-800")}
+        {calculatorButton('6', () => inputDigit('6'), "bg-gray-50 hover:bg-gray-100 text-gray-800")}
+        {calculatorButton(<Minus size={18} />, () => handleOperator('-'), "bg-purple-100 hover:bg-purple-200 text-purple-600")}
 
         {/* Fourth row */}
-        {calculatorButton('1', () => inputDigit('1'))}
-        {calculatorButton('2', () => inputDigit('2'))}
-        {calculatorButton('3', () => inputDigit('3'))}
-        {calculatorButton(<Plus size={18} />, () => handleOperator('+'), "bg-purple-500/20 hover:bg-purple-500/30 text-purple-500")}
+        {calculatorButton('1', () => inputDigit('1'), "bg-gray-50 hover:bg-gray-100 text-gray-800")}
+        {calculatorButton('2', () => inputDigit('2'), "bg-gray-50 hover:bg-gray-100 text-gray-800")}
+        {calculatorButton('3', () => inputDigit('3'), "bg-gray-50 hover:bg-gray-100 text-gray-800")}
+        {calculatorButton(<Plus size={18} />, () => handleOperator('+'), "bg-purple-100 hover:bg-purple-200 text-purple-600")}
 
         {/* Fifth row */}
-        {calculatorButton('00', () => inputDigit('00'))}
-        {calculatorButton('0', () => inputDigit('0'))}
-        {calculatorButton('.', inputDecimal)}
-        {calculatorButton('=', calculateResult, "bg-green-500/20 hover:bg-green-500/30 text-green-500")}
+        {calculatorButton('00', () => inputDigit('00'), "bg-gray-50 hover:bg-gray-100 text-gray-800")}
+        {calculatorButton('0', () => inputDigit('0'), "bg-gray-50 hover:bg-gray-100 text-gray-800")}
+        {calculatorButton('.', inputDecimal, "bg-gray-50 hover:bg-gray-100 text-gray-800")}
+        {calculatorButton('=', calculateResult, "bg-green-100 hover:bg-green-200 text-green-600")}
       </div>
       
-      <div className="mt-4 text-xs text-center text-gray-400">
+      <div className="mt-4 text-xs text-center text-gray-600">
         <p>Keyboard shortcuts: Numbers, +, -, *, /, =, Enter, Backspace, Esc</p>
       </div>
     </Card>
