@@ -22,7 +22,7 @@ NeoWallet is a modern digital wallet application designed for seamless money tra
 
 - **Advanced UI Enhancements**
   - Improved UI visibility with optimized color contrast.
-  - Instagram-inspired theme for an engaging experience.
+  - An Instagram-inspired theme for an engaging experience.
   - Enhanced accessibility and readability.
     
 **![Image](https://github.com/user-attachments/assets/aac58351-b4bb-4a8d-bd41-766925da58a6)**
