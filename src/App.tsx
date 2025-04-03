@@ -18,15 +18,24 @@ import Banking from "./pages/Banking";
 import Budget from "./pages/Budget";
 import InternationalTransfer from "./pages/InternationalTransfer";
 import FinancialAssistant from "./pages/FinancialAssistant";
+import Calculator from "./pages/Calculator";
+import { useKeyboardShortcuts } from "./utils/keyboardShortcuts";
 import * as React from "react";
 
 const queryClient = new QueryClient();
+
+// Component to handle keyboard shortcuts
+const KeyboardShortcutsHandler = () => {
+  useKeyboardShortcuts();
+  return null;
+};
 
 const App = () => {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
+          <KeyboardShortcutsHandler />
           <div className="flex min-h-screen bg-background">
             <Sidebar />
             <main className="flex-1 md:ml-64 p-4 md:p-8 pt-16 md:pt-8">
@@ -45,6 +54,7 @@ const App = () => {
                   <Route path="/banking" element={<Banking />} />
                   <Route path="/international" element={<InternationalTransfer />} />
                   <Route path="/assistant" element={<FinancialAssistant />} />
+                  <Route path="/calculator" element={<Calculator />} />
                 </Routes>
               </div>
             </main>
