@@ -1,24 +1,24 @@
 
-import { Card } from "@/components/ui/card";
-import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend, BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area } from "recharts";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend, BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area, CartesianGrid } from "recharts";
 import { ArrowUpRight, ArrowDownRight, AlertTriangle, TrendingUp, BrainCircuit, Users, Shield, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Enhanced mock data for AI insights
 const monthlyData = [
-  { name: "Jan", spending: -1200, income: 5000, budget: 4000, debt: -800, savings: 1000, peerAvg: 3500, forecast: 3800 },
-  { name: "Feb", spending: -2100, income: 5200, budget: 4000, debt: -600, savings: 1500, peerAvg: 3600, forecast: 3700 },
-  { name: "Mar", spending: -800, income: 5100, budget: 4000, debt: -900, savings: 2000, peerAvg: 3400, forecast: 3600 },
-  { name: "Apr", spending: -1600, income: 5300, budget: 4000, debt: -700, savings: 2200, peerAvg: 3800, forecast: 3900 },
-  { name: "May", spending: -900, income: 5400, budget: 4000, debt: -500, savings: 2800, peerAvg: 3700, forecast: 3500 },
-  { name: "Jun", spending: -1700, income: 5500, budget: 4000, debt: -400, savings: 3000, peerAvg: 3900, forecast: 4000 },
+  { name: "Jan", spending: 1200, income: 5000, budget: 4000, debt: 800, savings: 1000, peerAvg: 3500, forecast: 3800 },
+  { name: "Feb", spending: 2100, income: 5200, budget: 4000, debt: 600, savings: 1500, peerAvg: 3600, forecast: 3700 },
+  { name: "Mar", spending: 800, income: 5100, budget: 4000, debt: 900, savings: 2000, peerAvg: 3400, forecast: 3600 },
+  { name: "Apr", spending: 1600, income: 5300, budget: 4000, debt: 700, savings: 2200, peerAvg: 3800, forecast: 3900 },
+  { name: "May", spending: 900, income: 5400, budget: 4000, debt: 500, savings: 2800, peerAvg: 3700, forecast: 3500 },
+  { name: "Jun", spending: 1700, income: 5500, budget: 4000, debt: 400, savings: 3000, peerAvg: 3900, forecast: 4000 },
 ];
 
 const spendingCategories = [
-  { name: "Food", value: 3500, color: "#FF8042", change: "+5%" },
-  { name: "Bills", value: 2500, color: "#00C49F", change: "-2%" },
-  { name: "Shopping", value: 2000, color: "#FFBB28", change: "+8%" },
-  { name: "Entertainment", value: 1500, color: "#0088FE", change: "-3%" },
+  { name: "Food", value: 3500, color: "#1A1F71", change: "+5%" }, // Primary Navy
+  { name: "Bills", value: 2500, color: "#F7B600", change: "-2%" }, // Accent Gold
+  { name: "Shopping", value: 2000, color: "#0091DA", change: "+8%" }, // Visa Blueish
+  { name: "Ent", value: 1500, color: "#6F7C87", change: "-3%" }, // Grey
 ];
 
 const walletHealth = {
@@ -38,201 +38,200 @@ const securityMetrics = [
 
 const Analytics = () => {
   return (
-    <div className="space-y-8">
-      <header className="flex justify-between items-center">
+    <div className="space-y-8 animate-in fade-in duration-500">
+      <header className="flex justify-between items-center border-b border-border pb-6">
         <div>
-          <h1 className="text-4xl font-bold text-white">Analytics Overview</h1>
-          <p className="text-secondary-foreground">Track your financial performance</p>
+          <h1 className="text-3xl font-bold text-primary tracking-tight">Analytics Overview</h1>
+          <p className="text-muted-foreground mt-1">Track your financial performance with ease.</p>
         </div>
-        <Button className="glass-card hover:bg-white/10" onClick={() => console.log("Download report")}>
+        <Button variant="outline" className="bg-white" onClick={() => console.log("Download report")}>
           <Download className="h-4 w-4 mr-2" />
           Download Report
         </Button>
       </header>
 
       {/* AI Insights Summary */}
-      <Card className="glass-card p-6">
-        <div className="flex items-center space-x-2 mb-4">
-          <BrainCircuit className="h-5 w-5 text-purple-400" />
-          <h3 className="text-lg font-semibold text-white">AI-Powered Insights</h3>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 bg-white/5 rounded-lg">
-            <p className="text-sm text-gray-400">Spending Forecast</p>
-            <p className="text-xl font-bold text-white">₹4,200</p>
-            <p className="text-sm text-green-400">5% below average</p>
+      <Card className="shadow-sm border-l-4 border-l-purple-600 bg-purple-50/50">
+        <CardContent className="p-6">
+          <div className="flex items-center space-x-2 mb-4">
+            <BrainCircuit className="h-5 w-5 text-purple-600" />
+            <h3 className="text-lg font-semibold text-primary">AI-Powered Insights</h3>
           </div>
-          <div className="p-4 bg-white/5 rounded-lg">
-            <p className="text-sm text-gray-400">Suggested Budget</p>
-            <p className="text-xl font-bold text-white">₹3,800</p>
-            <p className="text-sm text-blue-400">Based on your patterns</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-4 bg-white rounded-lg border border-purple-100 shadow-sm">
+              <p className="text-sm text-muted-foreground">Spending Forecast</p>
+              <p className="text-xl font-bold text-primary">₹4,200</p>
+              <p className="text-sm text-green-600 font-medium">5% below average</p>
+            </div>
+            <div className="p-4 bg-white rounded-lg border border-purple-100 shadow-sm">
+              <p className="text-sm text-muted-foreground">Suggested Budget</p>
+              <p className="text-xl font-bold text-primary">₹3,800</p>
+              <p className="text-sm text-blue-600 font-medium">Based on your patterns</p>
+            </div>
+            <div className="p-4 bg-white rounded-lg border border-purple-100 shadow-sm">
+              <p className="text-sm text-muted-foreground">Savings Potential</p>
+              <p className="text-xl font-bold text-primary">₹1,200</p>
+              <p className="text-sm text-yellow-600 font-medium">Achievable this month</p>
+            </div>
           </div>
-          <div className="p-4 bg-white/5 rounded-lg">
-            <p className="text-sm text-gray-400">Savings Potential</p>
-            <p className="text-xl font-bold text-white">₹1,200</p>
-            <p className="text-sm text-yellow-400">Achievable this month</p>
-          </div>
-        </div>
+        </CardContent>
       </Card>
 
       {/* Main Financial Trends */}
-      <Card className="glass-card p-6">
-        <h3 className="text-lg font-semibold mb-4 text-white">Financial Trends</h3>
-        <div className="h-[400px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={monthlyData}>
-              <XAxis dataKey="name" stroke="#888888" />
-              <YAxis stroke="#888888" />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'rgba(17, 17, 17, 0.8)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  borderRadius: '8px'
-                }}
-              />
-              <Legend />
-              <Line type="monotone" dataKey="spending" stroke="#22c55e" name="Spending" strokeWidth={2} />
-              <Line type="monotone" dataKey="income" stroke="#3b82f6" name="Income" strokeWidth={2} />
-              <Line type="monotone" dataKey="budget" stroke="#f97316" name="Budget" strokeWidth={2} />
-              <Line type="monotone" dataKey="debt" stroke="#ef4444" name="Debt" strokeWidth={2} />
-              <Line type="monotone" dataKey="savings" stroke="#eab308" name="Savings" strokeWidth={2} />
-              <Line type="monotone" dataKey="peerAvg" stroke="#8b5cf6" name="Peer Average" strokeWidth={2} />
-              <Line type="monotone" dataKey="forecast" stroke="#ec4899" name="AI Forecast" strokeWidth={2} strokeDasharray="5 5" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+      <Card className="shadow-sm">
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-primary">Financial Trends</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[400px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={monthlyData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                <XAxis dataKey="name" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#fff',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
+                  }}
+                />
+                <Legend iconType="circle" />
+                <Line type="monotone" dataKey="income" stroke="#1A1F71" name="Income" strokeWidth={3} dot={{ r: 4 }} />
+                <Line type="monotone" dataKey="spending" stroke="#F7B600" name="Expenses" strokeWidth={3} dot={{ r: 4 }} />
+                <Line type="monotone" dataKey="savings" stroke="#22c55e" name="Savings" strokeWidth={3} dot={{ r: 4 }} />
+                <Line type="monotone" dataKey="forecast" stroke="#94a3b8" name="Forecast" strokeWidth={2} strokeDasharray="5 5" dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
       </Card>
 
       {/* Wallet Health & Savings Goals */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="glass-card p-6">
-          <h3 className="text-lg font-semibold mb-4 text-white">Wallet Health</h3>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+        <Card className="shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold text-primary">Wallet Health</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border border-border">
               <div className="flex items-center space-x-3">
-                <ArrowUpRight className="h-5 w-5 text-green-500" />
+                <div className="p-2 bg-green-100 rounded-full">
+                  <ArrowUpRight className="h-5 w-5 text-green-700" />
+                </div>
                 <div>
-                  <p className="text-sm text-gray-400">Current Balance</p>
-                  <p className="font-medium text-white">₹{walletHealth.balance.toLocaleString()}</p>
+                  <p className="text-sm text-muted-foreground">Current Balance</p>
+                  <p className="font-bold text-primary">₹{walletHealth.balance.toLocaleString()}</p>
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border border-border">
               <div className="flex items-center space-x-3">
-                <ArrowDownRight className="h-5 w-5 text-red-500" />
+                <div className="p-2 bg-red-100 rounded-full">
+                  <ArrowDownRight className="h-5 w-5 text-red-700" />
+                </div>
                 <div>
-                  <p className="text-sm text-gray-400">Average Monthly Spending</p>
-                  <p className="font-medium text-white">₹{walletHealth.avgSpending.toLocaleString()}</p>
+                  <p className="text-sm text-muted-foreground">Avg Monthly Spending</p>
+                  <p className="font-bold text-primary">₹{walletHealth.avgSpending.toLocaleString()}</p>
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border border-border">
               <div className="flex items-center space-x-3">
-                <AlertTriangle className="h-5 w-5 text-yellow-500" />
+                <div className="p-2 bg-yellow-100 rounded-full">
+                  <AlertTriangle className="h-5 w-5 text-yellow-700" />
+                </div>
                 <div>
-                  <p className="text-sm text-gray-400">Upcoming Bills</p>
-                  <p className="font-medium text-white">₹{walletHealth.upcomingBills.toLocaleString()}</p>
+                  <p className="text-sm text-muted-foreground">Upcoming Bills</p>
+                  <p className="font-bold text-primary">₹{walletHealth.upcomingBills.toLocaleString()}</p>
                 </div>
               </div>
             </div>
-            <div className="p-4 bg-white/5 rounded-lg">
+            <div className="p-4 bg-muted/30 rounded-lg border border-border">
               <div className="flex justify-between mb-2">
-                <p className="text-sm text-gray-400">Savings Goal Progress</p>
-                <p className="text-sm text-white">₹{walletHealth.savingsProgress} / ₹{walletHealth.savingsGoal}</p>
+                <p className="text-sm font-medium text-primary">Savings Goal Progress</p>
+                <p className="text-sm text-muted-foreground">₹{walletHealth.savingsProgress} / ₹{walletHealth.savingsGoal}</p>
               </div>
-              <div className="w-full bg-gray-700 rounded-full h-2.5">
+              <div className="w-full bg-gray-200 rounded-full h-2.5">
                 <div
-                  className="bg-blue-500 h-2.5 rounded-full"
+                  className="bg-primary h-2.5 rounded-full"
                   style={{ width: `${(walletHealth.savingsProgress / walletHealth.savingsGoal) * 100}%` }}
                 ></div>
               </div>
             </div>
-          </div>
+          </CardContent>
         </Card>
 
-        <Card className="glass-card p-6">
-          <h3 className="text-lg font-semibold mb-4 text-white">Spending Categories</h3>
-          <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={spendingCategories}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  paddingAngle={5}
-                  dataKey="value"
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                >
-                  {spendingCategories.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: 'rgba(17, 17, 17, 0.8)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: '8px'
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="mt-4 space-y-2">
-            {spendingCategories.map((category, index) => (
-              <div key={index} className="flex justify-between items-center">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: category.color }}></div>
-                  <span className="text-sm text-white">{category.name}</span>
+        <Card className="shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold text-primary">Spending Breakdown</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={spendingCategories}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {spendingCategories.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#fff',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
+                    }}
+                  />
+                  <Legend verticalAlign="bottom" height={36} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="mt-4 space-y-3">
+              {spendingCategories.map((category, index) => (
+                <div key={index} className="flex justify-between items-center border-b border-border pb-2 last:border-0 last:pb-0">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: category.color }}></div>
+                    <span className="text-sm font-medium text-foreground">{category.name}</span>
+                  </div>
+                  <span className={`text-sm font-bold ${category.change.startsWith('+') ? 'text-red-500' : 'text-green-500'}`}>
+                    {category.change}
+                  </span>
                 </div>
-                <span className={`text-sm ${category.change.startsWith('+') ? 'text-green-400' : 'text-red-400'}`}>
-                  {category.change}
-                </span>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </CardContent>
         </Card>
       </div>
 
-      {/* Monthly Income vs Expenses */}
-      <Card className="glass-card p-6">
-        <h3 className="text-lg font-semibold mb-4 text-white">Income vs Expenses</h3>
-        <div className="h-[300px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={monthlyData}>
-              <XAxis dataKey="name" stroke="#888888" />
-              <YAxis stroke="#888888" />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'rgba(17, 17, 17, 0.8)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  borderRadius: '8px'
-                }}
-              />
-              <Legend />
-              <Bar dataKey="income" name="Income" fill="#3b82f6" />
-              <Bar dataKey="spending" name="Expenses" fill="#ef4444" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </Card>
-
       {/* Security & Fraud Detection */}
-      <Card className="glass-card p-6">
-        <div className="flex items-center space-x-2 mb-4">
-          <Shield className="h-5 w-5 text-purple-400" />
-          <h3 className="text-lg font-semibold text-white">Security Insights</h3>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {securityMetrics.map((metric, index) => (
-            <div key={index} className="p-4 bg-white/5 rounded-lg">
-              <p className="text-sm text-gray-400">{metric.name}</p>
-              <p className="text-lg font-semibold text-white">{metric.status}</p>
-              <p className="text-xs text-gray-500">Last checked: {metric.lastCheck}</p>
-            </div>
-          ))}
-        </div>
+      <Card className="shadow-sm border-l-4 border-l-blue-600 bg-blue-50/30">
+        <CardHeader className="pb-2">
+          <div className="flex items-center space-x-2">
+            <Shield className="h-5 w-5 text-blue-600" />
+            <h3 className="text-lg font-semibold text-primary">Security Status</h3>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+            {securityMetrics.map((metric, index) => (
+              <div key={index} className="p-4 bg-white rounded-lg border border-blue-100 shadow-sm">
+                <p className="text-sm text-muted-foreground">{metric.name}</p>
+                <p className="text-lg font-bold text-primary mt-1">{metric.status}</p>
+                <p className="text-xs text-blue-500 mt-1">Last checked: {metric.lastCheck}</p>
+              </div>
+            ))}
+          </div>
+        </CardContent>
       </Card>
     </div>
   );

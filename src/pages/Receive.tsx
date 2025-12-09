@@ -1,11 +1,12 @@
 
 import { useState, useEffect } from "react";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Copy, Wallet, Share2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import QRCode from "react-qr-code";
+import { Button } from "@/components/ui/button";
 
 const ReceiveMoney = () => {
   const { toast } = useToast();
@@ -68,93 +69,100 @@ const ReceiveMoney = () => {
   };
 
   return (
-    <div className="space-y-8">
-      <header>
-        <h1 className="text-4xl font-bold text-primary">Receive Money</h1>
-        <p className="text-secondary-foreground">Request payments or share your wallet details</p>
+    <div className="space-y-8 animate-in fade-in duration-500">
+      <header className="border-b border-border pb-6">
+        <h1 className="text-3xl font-bold text-primary tracking-tight">Receive Money</h1>
+        <p className="text-muted-foreground mt-1">Request payments or share your wallet details</p>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="glass-card p-6">
-          <h2 className="text-xl font-semibold text-white mb-6">Share Your Wallet ID</h2>
-          <div className="space-y-6">
-            <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+        <Card className="shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-xl font-bold text-primary">Share Your Wallet ID</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="flex items-center justify-between p-4 bg-muted/40 rounded-lg border border-border">
               <div className="flex items-center space-x-3">
-                <Wallet className="h-5 w-5 text-purple-500" />
-                <span className="font-mono text-white">{walletId}</span>
+                <div className="p-2 bg-primary/10 rounded-full">
+                  <Wallet className="h-5 w-5 text-primary" />
+                </div>
+                <span className="font-mono text-lg font-semibold text-foreground">{walletId}</span>
               </div>
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={handleCopyWalletId}
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                className="hover:bg-primary/10 text-primary"
               >
-                <Copy className="h-4 w-4 text-purple-500" />
-              </button>
+                <Copy className="h-4 w-4" />
+              </Button>
             </div>
 
-            <div className="flex flex-col items-center">
-              <div className="p-4 bg-white rounded-lg max-w-[200px] mx-auto">
-                <QRCode 
+            <div className="flex flex-col items-center pt-4">
+              <div className="p-4 bg-white rounded-xl border border-border shadow-sm">
+                <QRCode
                   value={qrData}
                   size={180}
                   style={{ height: "auto", maxWidth: "100%", width: "100%" }}
                   viewBox={`0 0 256 256`}
                 />
               </div>
-              <div className="mt-4 flex items-center justify-center">
-                <button
+              <div className="mt-6 flex items-center justify-center w-full">
+                <Button
+                  variant="outline"
                   onClick={handleShareQR}
-                  className="flex items-center space-x-2 p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
+                  className="w-full max-w-xs"
                 >
-                  <Share2 className="h-4 w-4 text-purple-500" />
-                  <span>Share QR Code</span>
-                </button>
+                  <Share2 className="h-4 w-4 mr-2" />
+                  Share QR Code
+                </Button>
               </div>
-              <p className="text-sm text-center text-gray-400 mt-4">
+              <p className="text-sm text-center text-muted-foreground mt-4">
                 Anyone can scan this QR code to instantly send money to your wallet
               </p>
             </div>
-          </div>
+          </CardContent>
         </Card>
 
-        <Card className="glass-card p-6">
-          <h2 className="text-xl font-semibold text-white mb-6">Request Money</h2>
-          <div className="space-y-6">
+        <Card className="shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-xl font-bold text-primary">Request Money</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
             <div>
-              <Label htmlFor="amount" className="text-white">Amount (₹)</Label>
+              <Label htmlFor="amount" className="text-foreground">Amount (₹)</Label>
               <Input
                 id="amount"
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="text-2xl font-bold bg-white/5 border-white/10 text-white"
+                className="text-2xl font-bold mt-2"
                 placeholder="0.00"
               />
             </div>
 
             <div>
-              <Label htmlFor="note" className="text-white">Add a note</Label>
+              <Label htmlFor="note" className="text-foreground">Add a note</Label>
               <Input
                 id="note"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                className="bg-white/5 border-white/10 text-white"
+                className="mt-2"
                 placeholder="What's this for?"
               />
             </div>
 
-            <div>
-              <p className="text-sm text-gray-400 mb-2">
-                QR code updates automatically based on the amount and note
-              </p>
+            <div className="p-4 bg-blue-50 text-blue-800 rounded-lg text-sm border border-blue-100">
+              QR code updates automatically based on the amount and note
             </div>
 
-            <button
+            <Button
               onClick={handleRequestMoney}
-              className="w-full py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+              className="w-full py-6 text-lg"
             >
               Request Payment
-            </button>
-          </div>
+            </Button>
+          </CardContent>
         </Card>
       </div>
     </div>
