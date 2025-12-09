@@ -1,82 +1,94 @@
 # NeoWallet
 
-## Overview
-NeoWallet is a modern digital wallet application designed for seamless money transactions, expense tracking, and AI-driven budgeting insights. With an Instagram-inspired UI/UX, it offers a user-friendly and intuitive financial management experience.
-
-**Check out the deployed site: [NeoWallet](https://preeminent-gaufre-164ae8.netlify.app/)**
-
 ![NeoWallet Preview](https://github.com/user-attachments/assets/42585c9d-66e5-4e66-9fe8-ac665f365501)
 
-## Features
-### **🔹 Smart Transaction Insights & Analytics**
-- AI-powered automatic spending categorization (Groceries, Bills, Subscriptions, etc.).
-- Personalized budget suggestions based on transaction history.
-- Graphical spending trends with interactive charts.
+<div align="center">
 
-### **🔹 Transaction Management**
-- Send, receive, and schedule payments with ease.
-- View complete transaction history with filtering options.
-- Third-party payment integration for merchant transactions.
+**A Modern Digital Wallet for Seamless Financial Management.**
 
-![Transaction Management](https://github.com/user-attachments/assets/1f1da0bf-0eea-4f8c-b0c3-927978cce48c)
+[Live Demo](https://p-928053.lovable.app/) • [Deployed Site (Netlify)](https://preeminent-gaufre-164ae8.netlify.app/) • [Report Bug](https://github.com/BadakalaYashwanth/NeoWallet/issues)
 
-### **🔹 Advanced UI Enhancements**
-- Optimized color contrast for better visibility.
-- Instagram-inspired theme for an engaging user experience.
-- Enhanced accessibility and readability.
+</div>
 
-![Advanced UI](https://github.com/user-attachments/assets/aac58351-b4bb-4a8d-bd41-766925da58a6)
+## 📖 Overview
 
-### **🔹 Spending Analysis**
-- Overview of income, expenses, and available balance.
-- Pie charts and graphical representations of transaction history.
-- Monthly spending trends and AI-driven budget insights.
+**NeoWallet** is a modern digital wallet application designed for seamless money transactions, expense tracking, and AI-driven budgeting insights. Built with a focus on user experience, it features an Instagram-inspired UI/UX that makes financial management intuitive and engaging.
+
+## ✨ Key Features
+
+### 📊 Smart Analytics & Insights
+- **AI-Powered Categorization**: Automatically categorizes spending (Groceries, Bills, Subscriptions, etc.).
+- **Budget Suggestions**: Personalized AI-driven budget recommendations based on your history.
+- **Visual Trends**: Interactive charts and graphs to visualize spending habits.
 
 ![Spending Analysis](https://github.com/user-attachments/assets/113f52d8-f0df-4901-a564-30fbcbf1be29)
 
-## 🚀 Live Demo
-Experience NeoWallet live: [NeoWallet Deployment](https://p-928053.lovable.app/)
+### 💳 Seamless Transactions
+- **Send & Receive**: effortless peer-to-peer payments.
+- **QR Code Support**: Quick scan-and-pay functionality.
+- **Bill Splitting**: Easily share expenses with friends or groups.
+- **International Transfers**: Support for currency conversion.
 
-## 🔥 Unique Features
-- **Instagram-inspired UI/UX** – A visually engaging experience.
-- **AI-powered Spending Categorization** – Automatically sorts transactions.
-- **Personalized Budget Suggestions** – Smart financial planning.
-- **Interactive Data Visualization** – Graphs and charts for better insights.
-- **Keyboard Shortcuts** – Quick access to essential features.
-- **QR Code Transactions** – Easy peer-to-peer payments.
-- **AI Financial Assistant** – Smart financial guidance.
-- **International Transfers** – Currency conversion support.
-- **Bill Splitting Feature** – Share expenses effortlessly.
-- **Real-time Analytics Dashboard** – Instant spending insights.
+![Transaction Management](https://github.com/user-attachments/assets/1f1da0bf-0eea-4f8c-b0c3-927978cce48c)
 
-## 🛠 Installation
-1. Clone the repository:
+### 🎨 Premium User Experience
+- **Modern UI**: Instagram-inspired, sleek design with glassmorphism elements.
+- **Dark Mode**: Optimized color contrast for better visibility.
+- **Accessibility**: Enhanced readability and keyboard navigation support.
+
+![Advanced UI](https://github.com/user-attachments/assets/aac58351-b4bb-4a8d-bd41-766925da58a6)
+
+## 🛠️ Technology Stack
+
+This project is built using a modern, performance-oriented stack:
+
+- **Frontend**: [React 18](https://react.dev/), [Vite](https://vitejs.dev/), [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [TailwindCSS](https://tailwindcss.com/)
+- **UI Components**: [Shadcn UI](https://ui.shadcn.com/), [Radix UI](https://www.radix-ui.com/), [Lucide React](https://lucide.dev/)
+- **State Management**: [TanStack Query](https://tanstack.com/query/latest)
+- **Backend & Auth**: [Supabase](https://supabase.com/)
+- **Routing**: [React Router DOM](https://reactrouter.com/)
+- **Forms**: [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
+
+## 🚀 Getting Started
+
+Follow these steps to run the project locally.
+
+### Prerequisites
+- Node.js (v18 or higher recommended)
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository**
    ```bash
    git clone https://github.com/BadakalaYashwanth/NeoWallet.git
-   ```
-2. Navigate to the project directory:
-   ```bash
    cd NeoWallet
    ```
-3. Install dependencies:
+
+2. **Install dependencies**
    ```bash
    npm install
    ```
-4. Run the application:
+
+3. **Start the development server**
    ```bash
-   npm start
+   npm run dev
    ```
 
-## ⚙️ Technologies Used
-- React.js
-- Node.js
-- Express.js
-- MongoDB
-- Chart.js (Data Visualization)
-- AI/ML for Smart Budgeting
+4. **Open in Browser**
+   Navigate to `http://localhost:8080` (or the port shown in your terminal).
 
-## 🤝 Contributions
-We welcome contributions! Feel free to fork this repository and submit pull requests to improve NeoWallet.
+## 🤝 Contribution
+
+Contributions are welcome! If you'd like to improve NeoWallet:
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## 📩 Contact
-For any queries or suggestions, reach out via **GitHub Issues**.
+
+For any queries or suggestions, please reach out via [GitHub Issues](https://github.com/BadakalaYashwanth/NeoWallet/issues).
