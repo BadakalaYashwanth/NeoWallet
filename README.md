@@ -1,7 +1,5 @@
 # NeoWallet
 
-![NeoWallet Preview](https://github.com/user-attachments/assets/42585c9d-66e5-4e66-9fe8-ac665f365501)
-
 <div align="center">
 
 **A Modern Digital Wallet for Seamless Financial Management.**
