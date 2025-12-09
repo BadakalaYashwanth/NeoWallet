@@ -4,7 +4,7 @@
 
 **A Modern Digital Wallet for Seamless Financial Management.**
 
-[Live Demo](https://p-928053.lovable.app/) • [Deployed Site (Netlify)](https://neowa.netlify.app/) • [Report Bug](https://github.com/BadakalaYashwanth/NeoWallet/issues)
+[Live Demo](https://walletpa.netlify.app/) • [Deployed Site (Netlify)](https://walletpa.netlify.app/) • [Report Bug](https://github.com/BadakalaYashwanth/NeoWallet/issues)
 
 </div>
 
